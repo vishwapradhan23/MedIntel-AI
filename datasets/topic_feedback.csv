@@ -1,0 +1,150 @@
+feedback,topic
+"The doctor explained my diagnosis with patience and clarity.",Doctor/Consultation
+"My consultation was thorough and the specialist listened to all concerns.",Doctor/Consultation
+"The physician answered all my queries regarding medication side effects.",Doctor/Consultation
+"The doctor rushed through my appointment without listening properly.",Doctor/Consultation
+"Unprofessional consultation experience with an indifferent doctor.",Doctor/Consultation
+"The specialist provided reassuring guidance for my recovery plan.",Doctor/Consultation
+"Great consultation with a highly knowledgeable endocrinologist.",Doctor/Consultation
+"The doctor took time to review my entire medical history.",Doctor/Consultation
+"I felt heard and respected during my medical consultation today.",Doctor/Consultation
+"The physician was late and spent only two minutes examining me.",Doctor/Consultation
+"Excellent medical advice provided by the consulting specialist.",Doctor/Consultation
+"The doctor explained the diabetes management steps very clearly.",Doctor/Consultation
+"The consulting doctor was very empathetic and professional.",Doctor/Consultation
+"Inattentive doctor who dismissed my reported symptoms.",Doctor/Consultation
+"Clear instructions given by the doctor regarding diet changes.",Doctor/Consultation
+"The physician conducted a comprehensive physical examination.",Doctor/Consultation
+"Disappointing consultation; the doctor did not review my test results.",Doctor/Consultation
+"Very attentive medical officer during my morning checkup.",Doctor/Consultation
+"The consultant was friendly and answered my family's questions.",Doctor/Consultation
+"Rushed appointment with minimal explanation from the specialist.",Doctor/Consultation
+"The prescribed treatment plan worked wonders for my condition.",Treatment
+"The therapy session significantly reduced my chronic joint pain.",Treatment
+"The medication prescribed caused adverse side effects and nausea.",Treatment
+"Effective treatment regime recommended by the clinical team.",Treatment
+"The ongoing treatment has improved my overall energy and health.",Treatment
+"Unsatisfactory treatment results with zero improvement in symptoms.",Treatment
+"The physical therapy exercises helped restore my knee mobility.",Treatment
+"Clear guidelines provided for taking daily prescribed insulin doses.",Treatment
+"The treatment course was well organized and monitored regularly.",Treatment
+"Ineffective medical treatment that did not resolve my health issue.",Treatment
+"Successful recovery following the prescribed medical procedure.",Treatment
+"The clinic offers modern non-invasive treatment options.",Treatment
+"My blood sugar levels stabilized after starting the new treatment.",Treatment
+"Complications arose due to poor follow-up during treatment.",Treatment
+"The medical therapy plan was customized to my specific needs.",Treatment
+"Proper dosage instructions given for all prescribed drugs.",Treatment
+"The treatment program was expensive and yielded minimal results.",Treatment
+"Innovative treatment approach that accelerated my post-surgery healing.",Treatment
+"Clear explanation of potential treatment risks and benefits.",Treatment
+"The medication regimen was easy to follow and very effective.",Treatment
+"The nursing staff were incredibly supportive, caring, and attentive.",Staff
+"The reception counter staff were rude and unhelpful when checking in.",Staff
+"Polite and well-trained medical assistants assisted me at arrival.",Staff
+"Front-desk personnel were disorganized and lost my registration papers.",Staff
+"The nurses checked on me regularly throughout my hospital stay.",Staff
+"Unfriendly demeanor from billing counter employees.",Staff
+"Compassionate care provided by the ward nurses during recovery.",Staff
+"The phlebotomist was gentle while drawing blood samples.",Staff
+"Helpful security and support staff guided us to the correct room.",Staff
+"Inattentive nursing team who ignored patient call buttons.",Staff
+"Prompt assistance from hospital staff during patient transfer.",Staff
+"The administrative staff handled my insurance claims efficiently.",Staff
+"Rude support staff when asking for directions to the clinic.",Staff
+"Courteous nurses who made my hospital admission comfortable.",Staff
+"The reception staff answered phone inquiries politely.",Staff
+"Disrespectful treatment by front-desk customer representatives.",Staff
+"The medical staff worked cohesively to ensure patient comfort.",Staff
+"Empathetic nursing team who provided emotional support.",Staff
+"Lethargic staff performance resulting in slow patient service.",Staff
+"Excellent professionalism demonstrated by all healthcare workers.",Staff
+"I had to wait over two hours past my scheduled appointment time.",Waiting Time
+"Zero wait time; I was escorted to the consultation room immediately.",Waiting Time
+"Long waiting hours in the reception hall with no updates provided.",Waiting Time
+"Quick check-in process and minimal waiting duration today.",Waiting Time
+"Excessive waiting time for simple blood sample collection.",Waiting Time
+"The clinic managed appointments efficiently with short wait times.",Waiting Time
+"I spent three hours waiting just to get my lab test results.",Waiting Time
+"Prompt service with less than ten minutes of waiting time.",Waiting Time
+"Frustrating delay in seeing the specialist despite pre-booking.",Waiting Time
+"Fast turnaround time for doctor consultations and prescriptions.",Waiting Time
+"The waiting room was overcrowded due to appointment delays.",Waiting Time
+"Extremely fast registration and zero waiting queue at 9 AM.",Waiting Time
+"Delayed doctor arrival caused long waiting queues for all patients.",Waiting Time
+"Impressive scheduling efficiency; no unnecessary waiting time.",Waiting Time
+"Patients were kept waiting in corridors for several hours.",Waiting Time
+"Smooth flow of consultations kept waiting times very low.",Waiting Time
+"Unacceptable four-hour wait in the outpatient department.",Waiting Time
+"The hospital reduced patient wait times using automated check-in.",Waiting Time
+"Long queues at the pharmacy counter to collect medicines.",Waiting Time
+"Punctual doctors ensuring appointments run strictly on time.",Waiting Time
+"The hospital building was clean, modern, and well ventilated.",Facilities
+"Dirty washrooms and poorly maintained waiting area facilities.",Facilities
+"State-of-the-art medical diagnostic equipment and spacious rooms.",Facilities
+"The clinic lacks wheelchair ramps and proper accessibility features.",Facilities
+"Spotless patient rooms with comfortable beds and clean linens.",Facilities
+"Old, dingy facility with broken chairs in the waiting lounge.",Facilities
+"Clean, quiet, and comfortable recovery room environment.",Facilities
+"Noisy ward environment with malfunctioning air conditioning.",Facilities
+"Well-equipped laboratory facility for comprehensive health testing.",Facilities
+"Poor hygiene in the cafeteria and public restroom facilities.",Facilities
+"Modern clinic infrastructure with comfortable seating arrangements.",Facilities
+"The hospital parking facility was overcrowded and poorly managed.",Facilities
+"Bright, spacious, and sanitized outpatient department facilities.",Facilities
+"Outdated diagnostic machinery prone to frequent breakdowns.",Facilities
+"Excellent room amenities including clean water and television.",Facilities
+"Unsanitary conditions observed in the patient hallway area.",Facilities
+"High-tech intensive care unit with advanced monitoring systems.",Facilities
+"Lack of proper signage making facilities difficult to locate.",Facilities
+"Impeccable cleanliness maintained across all hospital floors.",Facilities
+"Inadequate seating capacity in the main hospital waiting hall.",Facilities
+"The disease prediction algorithm gave accurate and fast results.",Prediction/System
+"The machine learning system was easy to navigate and understand.",Prediction/System
+"The web portal crashed when I submitted my health parameters.",Prediction/System
+"Great system interface for comparing KNN and Naive Bayes performance.",Prediction/System
+"The prediction result gave helpful risk assessment insights.",Prediction/System
+"Input validation error occurred while entering glucose parameters.",Prediction/System
+"The AI system calculated diabetes risk probability quickly.",Prediction/System
+"System error displayed when opening the model comparison tab.",Prediction/System
+"Clean UI design for the disease prediction input form.",Prediction/System
+"The machine learning predictions matched my actual health reports.",Prediction/System
+"Slow page load speed when calculating health prediction outcomes.",Prediction/System
+"The interactive dashboard presents clear prediction statistics.",Prediction/System
+"The prediction explanation helped me understand feature weights.",Prediction/System
+"Confusing web design with unclear button labels on the portal.",Prediction/System
+"Seamless data processing from form submission to result display.",Prediction/System
+"The machine learning models provided objective diagnostic metrics.",Prediction/System
+"Feedback submission system worked smoothly without any glitches.",Prediction/System
+"The system accurately categorized patient feedback topics.",Prediction/System
+"Responsive web design that works seamlessly on mobile devices.",Prediction/System
+"System history page accurately records past user predictions.",Prediction/System
+"Overall good experience with the healthcare portal and service.",General Feedback
+"I would recommend this medical center to friends and family.",General Feedback
+"Satisfactory hospital visit with no major complaints.",General Feedback
+"Average experience overall; scope for improvement in service.",General Feedback
+"I am pleased with the quality of care provided by the hospital.",General Feedback
+"Disappointing overall service that failed to meet expectations.",General Feedback
+"Great initiative using AI technology to improve patient care.",General Feedback
+"Neutral feedback regarding the recent hospital visit.",General Feedback
+"Extremely pleased with the overall operational efficiency.",General Feedback
+"Poor overall service quality across multiple hospital departments.",General Feedback
+"Positive impression of the hospital management and services.",General Feedback
+"Standard healthcare service meeting basic patient requirements.",General Feedback
+"Highly impressive hospital ecosystem for patient healthcare.",General Feedback
+"The health platform provides valuable educational resources.",General Feedback
+"Unsatisfactory visit overall due to multiple service bottlenecks.",General Feedback
+"Appreciate the effort to digitize patient feedback and diagnostics.",General Feedback
+"Good healthcare center overall with dedicated professionals.",General Feedback
+"Mixed experience with good doctors but poor administrative support.",General Feedback
+"Exemplary healthcare facility delivering patient-centric services.",General Feedback
+"General feedback regarding overall clinic workflow and care.",General Feedback
+"worst experience with the doctor",Doctor/Consultation
+"This was the worst doctor experience I have ever had.",Doctor/Consultation
+"Worst service, terrible doctor, and awful treatment.",Doctor/Consultation
+"Worst consultation ever, doctor was unhelpful.",Doctor/Consultation
+"best experience with the doctor and staff",Doctor/Consultation
+"This was the best doctor experience I have ever had.",Doctor/Consultation
+"Best service, wonderful doctor, and superb treatment.",Doctor/Consultation
+"Best consultation ever, doctor and staff were outstanding.",Doctor/Consultation
+

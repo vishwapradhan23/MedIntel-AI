@@ -1,0 +1,123 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "hello", "hi", "hey", "good morning", "good afternoon", "greetings", "hi there", "hello assistant"
+            ],
+            "responses": [
+                "Hello! I am your AI Healthcare Educational Assistant. How can I help you today regarding health awareness or using this system?",
+                "Hi there! Welcome to the Healthcare AI Portal. Ask me questions about diabetes awareness, symptoms, prevention, or navigating the portal."
+            ]
+        },
+        {
+            "tag": "diabetes_information",
+            "patterns": [
+                "what is diabetes", "tell me about diabetes", "explain diabetes", "what causes diabetes disease", "define diabetes mellitus"
+            ],
+            "responses": [
+                "Diabetes mellitus is a chronic metabolic condition characterized by elevated levels of blood glucose (sugar), which leads over time to serious damage to the heart, blood vessels, eyes, kidneys, and nerves.",
+                "Diabetes occurs when your pancreas does not produce enough insulin, or when the body cannot effectively use the insulin it produces. Insulin is a hormone that regulates blood glucose."
+            ]
+        },
+        {
+            "tag": "diabetes_symptoms",
+            "patterns": [
+                "what are the symptoms of diabetes", "diabetes signs", "how do I know if I have diabetes", "common diabetes symptoms", "feeling thirsty and frequent urination"
+            ],
+            "responses": [
+                "Common symptoms of diabetes include: 1) Increased thirst (polydipsia), 2) Frequent urination (polyuria), 3) Increased hunger (polyphagia), 4) Unexplained weight loss, 5) Fatigue and blurred vision, and 6) Slow-healing sores. Please consult a doctor for clinical testing."
+            ]
+        },
+        {
+            "tag": "diabetes_causes",
+            "patterns": [
+                "what causes diabetes", "why do people get diabetes", "risk factors for diabetes", "is diabetes genetic", "causes of high blood sugar"
+            ],
+            "responses": [
+                "Diabetes risk factors include genetic predisposition (family history), obesity/high BMI, physical inactivity, unhealthy diet, age, and high blood pressure. Type 1 is an autoimmune condition, while Type 2 is largely linked to metabolic and lifestyle factors."
+            ]
+        },
+        {
+            "tag": "prevention",
+            "patterns": [
+                "how to prevent diabetes", "can diabetes be prevented", "prevention of type 2 diabetes", "how to avoid high sugar levels"
+            ],
+            "responses": [
+                "Type 2 diabetes can often be prevented or delayed through healthy lifestyle choices: 1) Maintain a healthy body weight, 2) Stay physically active (150 mins/week), 3) Eat a balanced diet low in refined sugars and saturated fats, and 4) Avoid tobacco use."
+            ]
+        },
+        {
+            "tag": "diet",
+            "patterns": [
+                "what is a healthy diabetes diet", "what foods to eat for diabetes", "diabetic diet plan", "what to avoid eating for sugar", "nutrition advice"
+            ],
+            "responses": [
+                "A diabetes-friendly diet emphasizes whole grains, leafy green vegetables, lean proteins, high-fiber foods, and healthy fats while limiting refined carbohydrates, sugary beverages, processed snacks, and excessive sodium."
+            ]
+        },
+        {
+            "tag": "exercise",
+            "patterns": [
+                "exercise for diabetes", "is physical activity good for sugar", "best workout for diabetes", "how much exercise do I need"
+            ],
+            "responses": [
+                "Regular exercise helps increase insulin sensitivity so your body can better utilize available glucose. Aim for at least 30 minutes of moderate aerobic activity (brisk walking, cycling, swimming) 5 days a week, combined with light resistance training."
+            ]
+        },
+        {
+            "tag": "bmi",
+            "patterns": [
+                "what is bmi", "body mass index meaning", "healthy bmi range", "how does bmi affect diabetes", "what is normal bmi"
+            ],
+            "responses": [
+                "Body Mass Index (BMI) measures body fat based on height and weight. Normal BMI ranges from 18.5 to 24.9. A BMI above 25 is considered overweight, and above 30 indicates obesity, which significantly increases diabetes risk."
+            ]
+        },
+        {
+            "tag": "healthy_lifestyle",
+            "patterns": [
+                "tips for healthy lifestyle", "how to live healthy", "general wellness advice", "healthy habits for life"
+            ],
+            "responses": [
+                "Key habits for a healthy lifestyle include maintaining a nutrient-dense diet, staying active daily, getting 7-8 hours of quality sleep, managing stress levels, staying hydrated, and undergoing regular routine health checkups."
+            ]
+        },
+        {
+            "tag": "prediction_help",
+            "patterns": [
+                "how does disease prediction work", "how to use prediction page", "explain prediction parameters", "what parameters do I enter"
+            ],
+            "responses": [
+                "Navigate to the 'Disease Prediction' page, enter your clinical parameters (Glucose, Blood Pressure, BMI, Age, Insulin, etc.), and choose between KNN or Naïve Bayes models to calculate an educational risk score."
+            ]
+        },
+        {
+            "tag": "feedback_help",
+            "patterns": [
+                "how to analyze feedback", "where to submit feedback", "how does sentiment analysis work", "explain topic classification"
+            ],
+            "responses": [
+                "On the 'Patient Feedback' page, type any patient review or comment. The system will use TF-IDF and Naïve Bayes to automatically classify your feedback into Sentiment (Positive/Negative/Neutral) and Healthcare Topic (Doctor, Treatment, Staff, etc.)."
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "bye", "goodbye", "see you later", "thank you bye", "exit", "thanks for help"
+            ],
+            "responses": [
+                "Thank you for visiting the Healthcare AI Assistant! Stay healthy and have a great day.",
+                "Goodbye! Remember that regular health checkups and healthy lifestyle choices are key to wellness."
+            ]
+        },
+        {
+            "tag": "unknown",
+            "patterns": [],
+            "responses": [
+                "I am sorry, I did not quite understand your question. Please ask me about diabetes awareness, symptoms, prevention, diet, exercise, BMI, or how to use the prediction and feedback modules of this system.",
+                "I'm an educational assistant trained on healthcare topics and system features. Could you please rephrase your question regarding health or diabetes?"
+            ]
+        }
+    ]
+}

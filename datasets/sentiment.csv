@@ -1,0 +1,135 @@
+feedback,sentiment
+"The disease prediction tool gave me clear insights into my health parameters.",Positive
+"The doctor explained my medical condition with great care and patience.",Positive
+"I am very satisfied with the prompt treatment and friendly staff support.",Positive
+"The hospital facilities were clean, modern, and very well maintained.",Positive
+"The healthcare application is incredibly intuitive, quick, and easy to use.",Positive
+"My consultation was thorough and the specialist answered all my questions.",Positive
+"The online prediction result matched my clinical checkup perfectly.",Positive
+"Exceptional patient service from the nursing team throughout my admission.",Positive
+"The automated system saved me time and reduced my anxiety about test results.",Positive
+"Great experience with the digital assistant, highly informative and accurate.",Positive
+"The treatment plan prescribed by the specialist worked wonderfully for me.",Positive
+"Clean clinic environment and extremely professional healthcare staff.",Positive
+"The patient dashboard gives a comprehensive view of my health metrics.",Positive
+"Quick response time and excellent clinical care provided by the team.",Positive
+"The health chatbot answered my questions about diabetes symptoms clearly.",Positive
+"I felt well cared for by the compassionate medical team.",Positive
+"Efficient system for tracking patient feedback and health statistics.",Positive
+"The doctor took time to listen attentively to all my medical concerns.",Positive
+"Smooth registration process and polite reception desk staff.",Positive
+"Highly accurate ML prediction that helped me understand my diabetes risk.",Positive
+"The nursing staff were polite, attentive, and supportive at all times.",Positive
+"Modern medical equipment and clean hospital environment.",Positive
+"I received my health assessment results quickly and without hassle.",Positive
+"The prediction algorithm is helpful for early risk detection.",Positive
+"Excellent hospital experience with caring staff and top-class care.",Positive
+"Clear explanations of medical metrics and risk factors provided.",Positive
+"The feedback module makes it easy to submit thoughts about our visit.",Positive
+"Very encouraging consultation with the clinical specialist.",Positive
+"The system UI is clean, responsive, and easy to navigate.",Positive
+"Prompt service, friendly staff, and accurate health analytics.",Positive
+"The AI assistant provided great general health guidance.",Positive
+"Clean diagnostic center with modern equipment and gentle staff.",Positive
+"Very reassuring experience during my annual health checkup.",Positive
+"The risk prediction model gave helpful educational feedback.",Positive
+"Wonderful experience; the medical personnel were empathetic and competent.",Positive
+"Fast response from the digital health interface.",Positive
+"The hospital ward was comfortable, quiet, and spotless.",Positive
+"Transparent information regarding patient care and diagnostic tests.",Positive
+"The chatbot gave polite and informative responses to my queries.",Positive
+"Overall excellent service, highly recommended healthcare portal.",Positive
+"I had to wait over two hours past my scheduled consultation time.",Negative
+"The billing staff were rude, unhelpful, and completely disorganized.",Negative
+"The hospital facilities were dirty, crowded, and unhygienic.",Negative
+"The doctor rushed through the consultation without listening to me.",Negative
+"The health prediction system crashed twice when submitting my data.",Negative
+"Long waiting times in the emergency reception area with no updates.",Negative
+"The prescribed treatment was ineffective and caused discomfort.",Negative
+"Poor communication from the hospital administration regarding bill details.",Negative
+"The consultation room was noisy and lacked proper hygiene.",Negative
+"The assistant failed to understand my basic medical question.",Negative
+"Terrible experience; doctors were indifferent to patient complaints.",Negative
+"Extremely delayed lab test reports caused immense stress.",Negative
+"Unfriendly reception staff and uncomfortable waiting room chairs.",Negative
+"The system gave an error when saving my patient feedback.",Negative
+"High consultation charges with very poor service quality.",Negative
+"The medical staff ignored my requests for assistance for hours.",Negative
+"Old equipment, dingy corridors, and lack of basic patient amenities.",Negative
+"Confusing interface with frequent input validation errors.",Negative
+"The specialist was unprofessional and dismissed my health concerns.",Negative
+"Dirty washrooms and poorly maintained waiting hall facilities.",Negative
+"The chatbot responses were repetitive, generic, and unhelpful.",Negative
+"Unorganized records management causing delays during checkout.",Negative
+"Inattentive nursing staff who neglected regular patient checks.",Negative
+"The diagnostic prediction result was vague and unclear.",Negative
+"Excessive waiting duration for a five-minute consultation.",Negative
+"Unsatisfactory treatment approach with no improvement in symptoms.",Negative
+"Cold behavior from front-desk personnel towards elderly patients.",Negative
+"System crashed while attempting to load the model comparison page.",Negative
+"No clear guidance provided on medication dosage or side effects.",Negative
+"The clinic environment felt unsafe and unsterilized.",Negative
+"Disappointing service overall with zero follow-up from the doctor.",Negative
+"The web portal loaded very slowly and threw network errors.",Negative
+"Mismanaged appointment scheduling leading to double bookings.",Negative
+"Rude support staff when inquiring about medical report status.",Negative
+"The treatment failed to relieve my medical symptoms.",Negative
+"Dark, cramped, and poorly ventilated patient waiting areas.",Negative
+"The automated assistant misclassified my query completely.",Negative
+"Lack of proper parking and accessible facilities for patients.",Negative
+"Frustrating delay in receiving doctor prescriptions.",Negative
+"Unhelpful feedback system that failed to record my review.",Negative
+"The appointment was scheduled for 10:30 AM on Tuesday.",Neutral
+"I submitted my health parameter details through the online form.",Neutral
+"The clinic is located on the third floor of the block.",Neutral
+"The system accepts glucose, BMI, blood pressure, and age values.",Neutral
+"The doctor requested a follow-up blood test next week.",Neutral
+"Patient feedback was recorded in the database log.",Neutral
+"The medical consultation lasted approximately fifteen minutes.",Neutral
+"The diagnostic center operates from 8 AM to 8 PM daily.",Neutral
+"The prediction algorithm compares KNN and Naive Bayes models.",Neutral
+"My medical records were transferred to the specialist office.",Neutral
+"The hospital administration building is adjacent to pharmacy.",Neutral
+"The web application utilizes SQLite database for storage.",Neutral
+"I received a confirmation receipt for my health report.",Neutral
+"Blood glucose levels were recorded during the morning checkup.",Neutral
+"The chatbot interface provides general health information.",Neutral
+"The patient history table displays previous prediction results.",Neutral
+"The clinic has separate departments for cardiology and endocrinology.",Neutral
+"I entered my blood pressure and BMI data into the input form.",Neutral
+"The follow-up appointment date is set for next month.",Neutral
+"Model evaluation statistics include accuracy, precision, and recall.",Neutral
+"The hospital pharmacy is open 24 hours a day.",Neutral
+"The user interface features a blue and white visual design.",Neutral
+"Patients can view their past feedback submissions in history.",Neutral
+"The nurse took my temperature and blood pressure reading.",Neutral
+"The system processes text feedback using TF-IDF vectorization.",Neutral
+"The medical report contains numerical laboratory test values.",Neutral
+"The consultation schedule is available on the main page.",Neutral
+"The application runs locally on a Python Flask web server.",Neutral
+"The patient completed the standard health survey questionnaire.",Neutral
+"The dashboard displays overall prediction and feedback totals.",Neutral
+"Blood pressure measurements were taken using a standard monitor.",Neutral
+"The chatbot operates using a structured JSON knowledge base.",Neutral
+"The specialist recommended routine physical exercise.",Neutral
+"The feedback entry was stored in the feedback database table.",Neutral
+"The hospital is located near the main city metro station.",Neutral
+"The disease prediction module requires eight input variables.",Neutral
+"The patient record includes age, insulin level, and skin thickness.",Neutral
+"The navigation bar allows switching between system modules.",Neutral
+"The consultation summary was attached to the patient file.",Neutral
+"The machine learning models were serialized using joblib.",Neutral
+"worst experience with the doctor",Negative
+"This was the worst doctor experience I have ever had.",Negative
+"Worst service, terrible doctor, and awful treatment.",Negative
+"Horrible experience with the consultation and staff.",Negative
+"Bad experience at the clinic with rude doctors.",Negative
+"Awful service and worst care overall.",Negative
+"Worst consultation ever, doctor was unhelpful.",Negative
+"best experience with the doctor and staff",Positive
+"This was the best doctor experience I have ever had.",Positive
+"Best service, wonderful doctor, and superb treatment.",Positive
+"Best consultation ever, doctor and staff were outstanding.",Positive
+"Amazing experience with the doctor and nursing staff.",Positive
+"Outstanding care and best medical treatment.",Positive
+

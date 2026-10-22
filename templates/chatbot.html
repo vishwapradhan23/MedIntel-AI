@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Healthcare Chatbot - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 1.5rem;">
+    <h1 class="page-title">Local Intelligent Healthcare Assistant</h1>
+</div>
+
+<!-- Alert notification container -->
+<div id="alertContainer"></div>
+
+<!-- Centered Chat Interface Container -->
+<div style="max-width: 860px; margin: 0 auto;">
+    <div class="card" style="padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="display: inline-block; width: 10px; height: 10px; background-color: #2e7d32; border-radius: 50%;"></span>
+                <strong style="color: var(--primary-dark); font-size: 0.95rem;">MedIntel Assistant</strong>
+            </div>
+            <span class="badge badge-info" style="font-size: 0.75rem;">Local & Private</span>
+        </div>
+
+        <div class="chat-box" style="height: 500px;">
+            <!-- Scrollable Conversation History -->
+            <div class="chat-history" id="chatHistory">
+                <!-- Initial Welcome Message from Bot -->
+                <div class="chat-bubble chat-bubble-bot">
+                    <div style="font-weight: 600; color: var(--primary-color); margin-bottom: 0.25rem;">MedIntel Assistant</div>
+                    Hello! I am your local AI healthcare assistant. You can ask me questions about diabetes risks, clinical symptoms, lifestyle tips, or nutrition.
+                </div>
+            </div>
+
+            <!-- Input Area Form -->
+            <form id="chatForm" class="chat-input-area">
+                <input type="text" id="chatInput" class="form-control" placeholder="Ask a health question (e.g., 'What are symptoms of diabetes?')..." autocomplete="off" required>
+                <button type="submit" id="sendBtn" class="btn btn-primary" style="white-space: nowrap;">
+                    Send →
+                </button>
+            </form>
+        </div>
+
+        <!-- Quick Question Suggestions -->
+        <div style="margin-top: 1.25rem; padding: 0 0.5rem;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--light-text); margin-bottom: 0.4rem;">
+                Suggested Queries:
+            </div>
+            <div class="pill-container" style="margin-top: 0.25rem;">
+                <button type="button" class="prompt-pill" onclick="sendPrompt('What are the common symptoms of diabetes?')">Symptoms of Diabetes</button>
+                <button type="button" class="prompt-pill" onclick="sendPrompt('How can I prevent diabetes through diet?')">Diabetes Prevention</button>
+                <button type="button" class="prompt-pill" onclick="sendPrompt('What is a normal blood glucose level?')">Normal Glucose Range</button>
+                <button type="button" class="prompt-pill" onclick="sendPrompt('What does BMI mean for diabetes risk?')">BMI & Risk</button>
+                <button type="button" class="prompt-pill" onclick="sendPrompt('What should I do if my test result is high risk?')">High Risk Advice</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatHistory = document.getElementById('chatHistory');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function appendMessage(sender, text, intent = null, confidence = null) {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble chat-bubble-${sender}`;
+
+        let header = '';
+        if (sender === 'user') {
+            header = '<div style="font-weight: 600; font-size: 0.82rem; margin-bottom: 0.2rem; opacity: 0.9;">You</div>';
+        } else {
+            const metaInfo = (intent && confidence !== null) 
+                ? `<span style="font-size: 0.75rem; color: var(--light-text); font-weight: normal; margin-left: 0.5rem;">[${intent} • ${confidence}%]</span>` 
+                : '';
+            header = `<div style="font-weight: 600; color: var(--primary-color); font-size: 0.85rem; margin-bottom: 0.25rem;">MedIntel Assistant ${metaInfo}</div>`;
+        }
+
+        bubble.innerHTML = `${header}<div>${text}</div>`;
+        chatHistory.appendChild(bubble);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Render user message
+        appendMessage('user', message);
+        chatInput.value = '';
+
+        sendBtn.disabled = true;
+
+        try {
+            const response = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                appendMessage('bot', data.bot_response, data.matched_intent, data.confidence);
+            } else {
+                appendMessage('bot', data.error || 'Sorry, I encountered an error processing your query.');
+            }
+        } catch (err) {
+            appendMessage('bot', 'Network error connecting to local chatbot backend.');
+        } finally {
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
+    });
+</script>
+{% endblock %}

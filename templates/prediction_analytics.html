@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Prediction Analytics & History - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Disease Prediction Analytics & Audit History</h1>
+    <p class="page-subtitle">
+        Visual distribution metrics, confidence averages, and historical audit logs of diabetes predictions.
+    </p>
+</div>
+
+<!-- Stat Cards -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+    <div class="stat-card" style="border-top-color: #1a6fb0;">
+        <div class="stat-value" id="totalPredictions">-</div>
+        <div class="stat-label">Total Predictions Evaluated</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #d32f2f;">
+        <div class="stat-value" id="highRiskCount" style="color: #d32f2f;">-</div>
+        <div class="stat-label">High Risk (Diabetic) Cases</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #2e7d32;">
+        <div class="stat-value" id="lowRiskCount" style="color: #2e7d32;">-</div>
+        <div class="stat-label">Low Risk (Non-Diabetic) Cases</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #20b2aa;">
+        <div class="stat-value" id="avgConfidence">-</div>
+        <div class="stat-label">Average Confidence Score</div>
+    </div>
+</div>
+
+<!-- Visual Chart Card -->
+<div class="card" style="margin-bottom: 2rem;">
+    <h2 class="card-title">Risk Distribution Ratio</h2>
+    <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        Proportion of patients stratified into High Risk vs. Low Risk categories.
+    </p>
+    <div style="position: relative; height: 280px; width: 100%;">
+        <canvas id="predictionPieChart"></canvas>
+    </div>
+</div>
+
+<!-- History Table Card -->
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="card-title" style="margin-bottom: 0;">Recent Prediction Logs</h2>
+        <a href="{{ url_for('predict_page') }}" class="btn btn-primary btn-sm">+ New Prediction</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Age</th>
+                    <th>Glucose</th>
+                    <th>BP</th>
+                    <th>BMI</th>
+                    <th>Model</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Clinical Notes</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody">
+                <tr>
+                    <td colspan="9" style="text-align: center; color: var(--light-text);">Loading prediction audit logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Fetch dashboard stats for counters and pie chart
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.stats) {
+                    const stats = data.stats;
+                    document.getElementById('totalPredictions').textContent = stats.total_predictions ?? '0';
+                    document.getElementById('highRiskCount').textContent = stats.diabetic_predictions ?? '0';
+                    document.getElementById('lowRiskCount').textContent = stats.non_diabetic_predictions ?? '0';
+                    document.getElementById('avgConfidence').textContent = (stats.avg_prediction_confidence ?? 0) + '%';
+
+                    // Render Pie Chart
+                    renderPredictionPieChart(
+                        'predictionPieChart',
+                        stats.diabetic_predictions || 0,
+                        stats.non_diabetic_predictions || 0
+                    );
+                }
+            })
+            .catch(err => console.error('Dashboard stats fetch error:', err));
+
+        // Fetch prediction history logs
+        fetch('/api/history')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('historyTableBody');
+                if (!data.success || !data.predictions || data.predictions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--light-text);">No prediction logs recorded yet.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.predictions.forEach(p => {
+                    const isDiabetic = p.prediction.toLowerCase().includes('high') || (p.prediction.toLowerCase().includes('diabetic') && !p.prediction.toLowerCase().includes('non'));
+                    const badgeClass = isDiabetic ? 'badge-danger' : 'badge-success';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-size: 0.82rem; color: var(--light-text); white-space: nowrap;">${p.timestamp}</td>
+                        <td>${p.age}</td>
+                        <td><strong>${p.glucose}</strong> mg/dL</td>
+                        <td>${p.blood_pressure}</td>
+                        <td>${p.bmi}</td>
+                        <td><span class="badge badge-info">${p.model_used}</span></td>
+                        <td><span class="badge ${badgeClass}">${p.prediction}</span></td>
+                        <td><strong>${p.confidence}%</strong></td>
+                        <td style="font-size: 0.85rem; max-width: 250px;">${p.interpretation || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error('History fetch error:', err);
+                document.getElementById('historyTableBody').innerHTML = 
+                    '<tr><td colspan="9" style="text-align: center; color: var(--danger-color);">Failed to load history logs.</td></tr>';
+            });
+    });
+</script>
+{% endblock %}

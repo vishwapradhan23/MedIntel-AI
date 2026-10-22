@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Model Comparison - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Machine Learning Model Comparison</h1>
+    <p class="page-subtitle">
+        Empirical evaluation and performance benchmarking comparing K-Nearest Neighbors (KNN), Gaussian Naïve Bayes, and Logistic Regression on the test dataset.
+    </p>
+</div>
+
+<!-- Best Model Banner -->
+<div class="alert alert-info" id="bestModelBanner" style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+        <strong>Benchmark Recommendation</strong>: 
+        <span id="bestModelText">Evaluating models...</span>
+    </div>
+    <span class="badge badge-success" id="bestModelBadge">Top Performer</span>
+</div>
+
+<!-- Comparison Chart Card -->
+<div class="card">
+    <h2 class="card-title">Multi-Metric Performance Benchmark</h2>
+    <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        Direct comparison of Accuracy, Precision, Recall, and F1-Score across all trained classifiers on the unseen test split.
+    </p>
+    <div style="position: relative; height: 360px; width: 100%;">
+        <canvas id="comparisonChart"></canvas>
+    </div>
+</div>
+
+<!-- Metrics Summary Table Card -->
+<div class="card">
+    <h2 class="card-title">Detailed Performance Metrics Table</h2>
+    <div class="table-responsive">
+        <table class="custom-table" id="metricsTable">
+            <thead>
+                <tr>
+                    <th>Algorithm / Model</th>
+                    <th>Accuracy (%)</th>
+                    <th>Precision (%)</th>
+                    <th>Recall (%)</th>
+                    <th>F1-Score (%)</th>
+                    <th>Optimal Fit</th>
+                </tr>
+            </thead>
+            <tbody id="metricsTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--light-text);">Loading model benchmark metrics...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Confusion Matrices Section -->
+<div class="card">
+    <h2 class="card-title">Confusion Matrices Analysis</h2>
+    <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Confusion matrices display True Negatives (TN), False Positives (FP), False Negatives (FN), and True Positives (TP) on the test partition.
+    </p>
+    <div class="grid-3" id="confusionMatricesContainer">
+        <!-- Dynamically populated -->
+    </div>
+</div>
+
+<!-- Theoretical ML Insights -->
+<div class="grid-2">
+    <div class="card">
+        <h3 class="card-title">Instance-Based Learning (KNN)</h3>
+        <p style="color: var(--dark-text); font-size: 0.92rem; line-height: 1.6;">
+            <strong>K-Nearest Neighbors ($k=7$)</strong> operates on non-parametric instance memory. When classifying a patient query vector $\mathbf{x}$, it computes the Euclidean distance:
+            $$d(\mathbf{x}, \mathbf{x}_i) = \sqrt{\sum_{j=1}^{d} (x_j - x_{i,j})^2}$$
+            Points closer in scaled feature space exert greater inverse-distance weight, providing strong non-linear boundary adaptability.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">Bayesian Learning (Naïve Bayes)</h3>
+        <p style="color: var(--dark-text); font-size: 0.92rem; line-height: 1.6;">
+            <strong>Gaussian Naïve Bayes</strong> computes posterior disease class probabilities using Bayes' Theorem with conditional independence assumptions:
+            $$P(C_k \mid \mathbf{x}) \propto P(C_k) \prod_{j=1}^{d} \mathcal{N}(x_j; \mu_{kj}, \sigma_{kj}^2)$$
+            Extremely fast at inference time and highly resilient to over-fitting on small datasets.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/api/metrics')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success || !data.disease_metrics) {
+                    console.error('Failed to load metrics data:', data);
+                    return;
+                }
+
+                const diseaseMetrics = data.disease_metrics;
+                const bestModel = data.best_disease_model || 'KNN';
+
+                // Update Best Model Banner
+                document.getElementById('bestModelText').innerHTML = 
+                    `<strong>${bestModel}</strong> achieved the superior balance of F1-Score and generalizability on the clinical evaluation partition.`;
+                document.getElementById('bestModelBadge').textContent = bestModel + ' Recommended';
+
+                // Render Chart using existing charts.js helper
+                renderComparisonChart('comparisonChart', diseaseMetrics);
+
+                // Populate Metrics Table
+                const tbody = document.getElementById('metricsTableBody');
+                tbody.innerHTML = '';
+
+                Object.keys(diseaseMetrics).forEach(modelName => {
+                    const m = diseaseMetrics[modelName];
+                    const isBest = modelName.toLowerCase().includes(bestModel.toLowerCase()) || bestModel.toLowerCase().includes(modelName.toLowerCase());
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${modelName}</strong></td>
+                        <td>${m.accuracy}%</td>
+                        <td>${m.precision}%</td>
+                        <td>${m.recall}%</td>
+                        <td>${m.f1_score}%</td>
+                        <td>
+                            ${isBest 
+                                ? '<span class="badge badge-success">Top Model</span>' 
+                                : '<span class="badge badge-info">Validated</span>'}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Populate Confusion Matrices
+                const cmContainer = document.getElementById('confusionMatricesContainer');
+                cmContainer.innerHTML = '';
+
+                Object.keys(diseaseMetrics).forEach(modelName => {
+                    const m = diseaseMetrics[modelName];
+                    const cm = m.confusion_matrix || [[0, 0], [0, 0]];
+                    const tn = cm[0][0], fp = cm[0][1];
+                    const fn = cm[1][0], tp = cm[1][1];
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.marginBottom = '0';
+                    card.style.padding = '1.25rem';
+                    card.style.textAlign = 'center';
+                    card.innerHTML = `
+                        <h4 style="color: var(--primary-dark); font-size: 1.05rem; margin-bottom: 0.75rem;">${modelName}</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.85rem; font-weight: 600;">
+                            <div style="background: var(--success-bg); color: var(--success-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div>TN: ${tn}</div>
+                                <small style="font-weight: 400; opacity: 0.85;">True Negative</small>
+                            </div>
+                            <div style="background: var(--warning-bg); color: var(--warning-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div>FP: ${fp}</div>
+                                <small style="font-weight: 400; opacity: 0.85;">False Positive</small>
+                            </div>
+                            <div style="background: var(--warning-bg); color: var(--warning-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div>FN: ${fn}</div>
+                                <small style="font-weight: 400; opacity: 0.85;">False Negative</small>
+                            </div>
+                            <div style="background: var(--success-bg); color: var(--success-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+                                <div>TP: ${tp}</div>
+                                <small style="font-weight: 400; opacity: 0.85;">True Positive</small>
+                            </div>
+                        </div>
+                    `;
+                    cmContainer.appendChild(card);
+                });
+            })
+            .catch(err => {
+                console.error('Error fetching metrics:', err);
+                document.getElementById('metricsTableBody').innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; color: var(--danger-color);">Error loading model metrics.</td></tr>';
+            });
+    });
+</script>
+{% endblock %}

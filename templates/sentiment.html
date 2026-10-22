@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Feedback Sentiment & Topic Analysis - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+        <h1 class="page-title" style="margin-bottom: 0.25rem;">Patient Feedback Sentiment & Topic Analysis</h1>
+    </div>
+    <a href="{{ url_for('feedback_analytics_page') }}" class="btn btn-secondary">
+        View Feedback Analytics →
+    </a>
+</div>
+
+<!-- Alert notification container -->
+<div id="alertContainer"></div>
+
+<div class="grid-2">
+    <!-- Input Form Card -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h2 class="card-title" style="margin-bottom: 0;">Patient Review Input</h2>
+        </div>
+
+        <p style="color: var(--light-text); font-size: 0.88rem; margin-bottom: 0.75rem;">
+            Select a sample review or enter your own feedback:
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleFeedback('The doctor was attentive, caring, and explained my medical condition clearly.')">
+                Sample: Positive (Doctor)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleFeedback('The waiting time was terrible and the front desk staff was rude and dismissive.')">
+                Sample: Negative (Waiting)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="fillSampleFeedback('I visited the facility for a routine blood test and picked up my lab report.')">
+                Sample: Neutral (General)
+            </button>
+        </div>
+
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label class="form-label" for="feedback_text">Patient Feedback Text</label>
+                <textarea id="feedback_text" name="feedback_text" class="form-control" rows="5" placeholder="Enter patient feedback here..." required></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                Analyze Sentiment & Domain Topic
+            </button>
+        </form>
+    </div>
+
+    <!-- Output Analysis Card -->
+    <div>
+        <div class="card" id="resultCard" style="display: none; border-left: 5px solid var(--primary-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 class="card-title" style="margin-bottom: 0;">Classification Result</h2>
+                <a href="{{ url_for('feedback_analytics_page') }}" class="btn btn-secondary btn-sm">
+                    View Analytics →
+                </a>
+            </div>
+
+            <div class="grid-2" style="margin: 1.25rem 0;">
+                <!-- Sentiment Output -->
+                <div style="text-align: center; padding: 1.25rem; background: var(--bg-color); border-radius: var(--radius-md);">
+                    <div style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 0.4rem;">Sentiment Polarity</div>
+                    <div id="sentimentBadge" style="font-size: 1.2rem; font-weight: 700; display: inline-block; padding: 0.4rem 1.1rem; border-radius: 50px; margin-bottom: 0.5rem;">
+                        -
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--light-text);">
+                        Confidence: <strong id="sentimentConfidence" style="color: var(--primary-dark);">-</strong>
+                    </div>
+                </div>
+
+                <!-- Topic Output -->
+                <div style="text-align: center; padding: 1.25rem; background: var(--bg-color); border-radius: var(--radius-md);">
+                    <div style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 0.4rem;">Operational Topic</div>
+                    <div id="topicBadge" class="badge badge-info" style="font-size: 1.1rem; font-weight: 700; padding: 0.4rem 1.1rem; border-radius: 50px; margin-bottom: 0.5rem;">
+                        -
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--light-text);">
+                        Confidence: <strong id="topicConfidence" style="color: var(--primary-dark);">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <h3 style="font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 0.5rem;">Extracted Salient Terms</h3>
+                <div id="termsContainer" style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                    <!-- Key term chips -->
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 1.25rem;">
+                <a href="{{ url_for('feedback_analytics_page') }}" class="btn btn-primary btn-sm">
+                    View in Feedback Logs →
+                </a>
+            </div>
+        </div>
+
+        <!-- Initial Clean State -->
+        <div class="card" id="initialPromptCard" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 380px; text-align: center; border: 2px dashed var(--border-color); background: transparent; box-shadow: none;">
+            <h3 style="color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 0.5rem;">Ready for Text Analysis</h3>
+            <p style="color: var(--light-text); font-size: 0.9rem; max-width: 320px; margin-bottom: 1.5rem;">
+                Enter patient feedback or pick one of the sample reviews on the left, then click "Analyze Sentiment & Domain Topic".
+            </p>
+            <a href="{{ url_for('feedback_analytics_page') }}" class="btn btn-secondary btn-sm">
+                View Feedback Analytics →
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        const alertContainer = document.getElementById('alertContainer');
+        alertContainer.innerHTML = '';
+
+        const feedbackText = document.getElementById('feedback_text').value.trim();
+        if (!feedbackText) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Analyzing Text...';
+
+        try {
+            const response = await fetch('/api/sentiment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ feedback_text: feedbackText })
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                showAlert('alertContainer', data.error || 'Failed to process feedback.', 'warning');
+                return;
+            }
+
+            // Display results
+            document.getElementById('initialPromptCard').style.display = 'none';
+            const resultCard = document.getElementById('resultCard');
+            resultCard.style.display = 'block';
+
+            // Sentiment Badge Styling
+            const sBadge = document.getElementById('sentimentBadge');
+            sBadge.textContent = data.sentiment;
+            if (data.sentiment === 'Positive') {
+                sBadge.className = 'badge badge-success';
+                resultCard.style.borderLeft = '5px solid #2e7d32';
+            } else if (data.sentiment === 'Negative') {
+                sBadge.className = 'badge badge-danger';
+                resultCard.style.borderLeft = '5px solid #d32f2f';
+            } else {
+                sBadge.className = 'badge badge-warning';
+                resultCard.style.borderLeft = '5px solid #ed6c02';
+            }
+
+            document.getElementById('sentimentConfidence').textContent = data.sentiment_confidence + '%';
+            document.getElementById('topicBadge').textContent = data.topic;
+            document.getElementById('topicConfidence').textContent = data.topic_confidence + '%';
+
+            // Render Terms Chips
+            const termsContainer = document.getElementById('termsContainer');
+            termsContainer.innerHTML = '';
+            if (data.processed_terms && data.processed_terms.length > 0) {
+                data.processed_terms.forEach(term => {
+                    const span = document.createElement('span');
+                    span.className = 'badge badge-info';
+                    span.style.textTransform = 'none';
+                    span.textContent = term;
+                    termsContainer.appendChild(span);
+                });
+            } else {
+                termsContainer.innerHTML = '<span style="color: var(--light-text); font-size: 0.85rem;">No salient vocabulary tokens extracted.</span>';
+            }
+
+            if (window.innerWidth < 900) {
+                resultCard.scrollIntoView({ behavior: 'smooth' });
+            }
+
+        } catch (err) {
+            showAlert('alertContainer', 'Network error connecting to NLP API: ' + err.message, 'warning');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Analyze Sentiment & Domain Topic';
+        }
+    });
+</script>
+{% endblock %}

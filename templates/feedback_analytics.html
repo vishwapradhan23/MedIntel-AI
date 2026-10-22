@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Feedback Analytics & History - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Patient Feedback Analytics & Sentiment History</h1>
+    <p class="page-subtitle">
+        Real-time patient satisfaction metrics, operational domain topic distribution, and feedback audit logs.
+    </p>
+</div>
+
+<!-- Stat Cards -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+    <div class="stat-card" style="border-top-color: #1a6fb0;">
+        <div class="stat-value" id="totalFeedback">-</div>
+        <div class="stat-label">Total Reviews Analyzed</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #2e7d32;">
+        <div class="stat-value" id="posCount" style="color: #2e7d32;">-</div>
+        <div class="stat-label">Positive Sentiment (<span id="posPct">0%</span>)</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #d32f2f;">
+        <div class="stat-value" id="negCount" style="color: #d32f2f;">-</div>
+        <div class="stat-label">Negative Sentiment (<span id="negPct">0%</span>)</div>
+    </div>
+    <div class="stat-card" style="border-top-color: #ed6c02;">
+        <div class="stat-value" id="neuCount" style="color: #ed6c02;">-</div>
+        <div class="stat-label">Neutral Sentiment (<span id="neuPct">0%</span>)</div>
+    </div>
+</div>
+
+<div class="grid-2" style="margin-bottom: 2rem;">
+    <!-- Doughnut Chart Card -->
+    <div class="card" style="margin-bottom: 0;">
+        <h2 class="card-title">Sentiment Breakdown</h2>
+        <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.25rem;">
+            Proportional distribution of positive, negative, and neutral patient feedback reviews.
+        </p>
+        <div style="position: relative; height: 280px; width: 100%;">
+            <canvas id="sentimentDoughnutChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Topic Breakdown Card -->
+    <div class="card" style="margin-bottom: 0;">
+        <h2 class="card-title">Operational Domain Topics</h2>
+        <p style="color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.25rem;">
+            Distribution of patient feedback categorized into 7 operational hospital areas.
+        </p>
+        <div id="topicBreakdownContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="color: var(--light-text); text-align: center; padding: 2rem;">Loading topic breakdown...</div>
+        </div>
+    </div>
+</div>
+
+<!-- History Table Card -->
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="card-title" style="margin-bottom: 0;">Patient Feedback History</h2>
+        <a href="{{ url_for('sentiment_page') }}" class="btn btn-primary btn-sm">+ Analyze New Feedback</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Patient Review Text</th>
+                    <th>Sentiment</th>
+                    <th>Sent. Conf.</th>
+                    <th>Domain Topic</th>
+                    <th>Topic Conf.</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--light-text);">Loading patient feedback logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Fetch dashboard stats for sentiment counters, doughnut chart, and topic list
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.stats) {
+                    const stats = data.stats;
+                    document.getElementById('totalFeedback').textContent = stats.total_feedback ?? '0';
+                    document.getElementById('posCount').textContent = stats.positive_feedback_count ?? '0';
+                    document.getElementById('negCount').textContent = stats.negative_feedback_count ?? '0';
+                    document.getElementById('neuCount').textContent = stats.neutral_feedback_count ?? '0';
+
+                    document.getElementById('posPct').textContent = (stats.positive_pct ?? 0) + '%';
+                    document.getElementById('negPct').textContent = (stats.negative_pct ?? 0) + '%';
+                    document.getElementById('neuPct').textContent = (stats.neutral_pct ?? 0) + '%';
+
+                    // Render Doughnut Chart using charts.js helper
+                    renderSentimentDoughnutChart(
+                        'sentimentDoughnutChart',
+                        stats.positive_feedback_count || 0,
+                        stats.negative_feedback_count || 0,
+                        stats.neutral_feedback_count || 0
+                    );
+
+                    // Render Topic Breakdown
+                    const topicContainer = document.getElementById('topicBreakdownContainer');
+                    const topicCounts = stats.topic_counts || {};
+                    const totalFb = stats.total_feedback || 1;
+
+                    topicContainer.innerHTML = '';
+                    if (Object.keys(topicCounts).length === 0) {
+                        topicContainer.innerHTML = '<div style="color: var(--light-text); text-align: center;">No topic data recorded.</div>';
+                    } else {
+                        Object.keys(topicCounts).forEach(topic => {
+                            const count = topicCounts[topic];
+                            const pct = Math.round((count / totalFb) * 100);
+                            const row = document.createElement('div');
+                            row.innerHTML = `
+                                <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.25rem;">
+                                    <strong>${topic}</strong>
+                                    <span style="color: var(--light-text);">${count} reviews (${pct}%)</span>
+                                </div>
+                                <div style="width: 100%; height: 8px; background-color: var(--border-color); border-radius: 4px; overflow: hidden;">
+                                    <div style="width: ${pct}%; height: 100%; background-color: var(--primary-color); border-radius: 4px;"></div>
+                                </div>
+                            `;
+                            topicContainer.appendChild(row);
+                        });
+                    }
+                }
+            })
+            .catch(err => console.error('Dashboard stats fetch error:', err));
+
+        // Fetch feedback history logs
+        fetch('/api/history')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('feedbackTableBody');
+                if (!data.success || !data.feedback || data.feedback.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--light-text);">No feedback logs recorded yet.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.feedback.forEach(fb => {
+                    let sBadgeClass = 'badge-info';
+                    if (fb.sentiment === 'Positive') sBadgeClass = 'badge-success';
+                    else if (fb.sentiment === 'Negative') sBadgeClass = 'badge-danger';
+                    else if (fb.sentiment === 'Neutral') sBadgeClass = 'badge-warning';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-size: 0.82rem; color: var(--light-text); white-space: nowrap;">${fb.timestamp}</td>
+                        <td style="max-width: 380px; font-size: 0.9rem;">"${fb.feedback_text}"</td>
+                        <td><span class="badge ${sBadgeClass}">${fb.sentiment}</span></td>
+                        <td>${fb.sentiment_confidence}%</td>
+                        <td><span class="badge badge-info">${fb.topic}</span></td>
+                        <td>${fb.topic_confidence}%</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error('History fetch error:', err);
+                document.getElementById('feedbackTableBody').innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; color: var(--danger-color);">Failed to load feedback logs.</td></tr>';
+            });
+    });
+</script>
+{% endblock %}

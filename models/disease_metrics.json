@@ -1,0 +1,66 @@
+{
+    "metrics": {
+        "KNN": {
+            "accuracy": 90.0,
+            "precision": 100.0,
+            "recall": 72.22,
+            "f1_score": 83.87,
+            "confusion_matrix": [
+                [
+                    32,
+                    0
+                ],
+                [
+                    5,
+                    13
+                ]
+            ],
+            "raw_acc": 0.9
+        },
+        "Na\u00efve Bayes": {
+            "accuracy": 82.0,
+            "precision": 73.68,
+            "recall": 77.78,
+            "f1_score": 75.68,
+            "confusion_matrix": [
+                [
+                    27,
+                    5
+                ],
+                [
+                    4,
+                    14
+                ]
+            ],
+            "raw_acc": 0.82
+        },
+        "Logistic Regression": {
+            "accuracy": 84.0,
+            "precision": 77.78,
+            "recall": 77.78,
+            "f1_score": 77.78,
+            "confusion_matrix": [
+                [
+                    28,
+                    4
+                ],
+                [
+                    4,
+                    14
+                ]
+            ],
+            "raw_acc": 0.84
+        }
+    },
+    "best_model": "KNN",
+    "feature_names": [
+        "Pregnancies",
+        "Glucose",
+        "BloodPressure",
+        "SkinThickness",
+        "Insulin",
+        "BMI",
+        "DiabetesPedigreeFunction",
+        "Age"
+    ]
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MedIntel AI - Healthcare Prediction & Analytics{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Main Application Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="brand-logo">
+                <div class="brand-icon">M</div>
+                <span>MedIntel AI</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('predict_page') }}" class="nav-link {% if active_page == 'predict' %}active{% endif %}">Disease Prediction</a></li>
+                <li><a href="{{ url_for('sentiment_page') }}" class="nav-link {% if active_page == 'sentiment' %}active{% endif %}">Feedback Sentiment</a></li>
+                <li><a href="{{ url_for('chatbot_page') }}" class="nav-link {% if active_page == 'chatbot' %}active{% endif %}">Chatbot</a></li>
+                <li><a href="{{ url_for('prediction_analytics_page') }}" class="nav-link {% if active_page == 'prediction-analytics' %}active{% endif %}">Prediction Analytics</a></li>
+                <li><a href="{{ url_for('feedback_analytics_page') }}" class="nav-link {% if active_page == 'feedback-analytics' %}active{% endif %}">Feedback Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-wrapper">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="nav-container" style="display: block; text-align: center;">
+            <p><strong>MedIntel AI</strong> — Machine Learning for Intelligent Systems (MLIS) University Project</p>
+            <p style="font-size: 0.82rem; margin-top: 0.4rem; color: #8898aa;">
+                <em>Academic & Educational Use Only. Model predictions and statistical outputs do not replace professional medical diagnosis or clinical advice.</em>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
