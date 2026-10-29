@@ -9,6 +9,7 @@ Description: SQLite Database interface using Python's built-in sqlite3.
 """
 
 import os
+import json
 import sqlite3
 from datetime import datetime
 
@@ -78,6 +79,20 @@ def init_db():
         )
     """)
 
+    # 4. Triage Logs Table (Symptom Triage & Red-Flag Detection)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS triage_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT NOT NULL,
+            symptom_text TEXT NOT NULL,
+            predicted_specialty TEXT NOT NULL,
+            confidence REAL NOT NULL,
+            top_3_json TEXT NOT NULL,
+            urgency TEXT NOT NULL,
+            red_flags_matched TEXT
+        )
+    """)
+
     conn.commit()
     conn.close()
     print(f"Database initialized successfully at {DB_PATH}")
@@ -143,6 +158,26 @@ def insert_chatbot_log(user_query, matched_intent, confidence, bot_response):
     conn.close()
     return log_id
 
+def insert_triage_log(symptom_text, predicted_specialty, confidence, top_3_json, urgency, red_flags_matched):
+    """Log a symptom triage query and inference result."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    cursor.execute("""
+        INSERT INTO triage_logs (
+            timestamp, symptom_text, predicted_specialty, confidence, top_3_json, urgency, red_flags_matched
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        now, str(symptom_text), str(predicted_specialty), float(confidence),
+        str(top_3_json), str(urgency), str(red_flags_matched)
+    ))
+
+    log_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    return log_id
+
 def get_all_predictions(limit=50):
     """Fetch recent prediction history records."""
     conn = get_db_connection()
@@ -157,6 +192,15 @@ def get_all_feedback(limit=50):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM feedback ORDER BY id DESC LIMIT ?", (limit,))
+    rows = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return rows
+
+def get_all_triage_logs(limit=50):
+    """Fetch recent symptom triage and red-flag audit logs."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM triage_logs ORDER BY id DESC LIMIT ?", (limit,))
     rows = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return rows
@@ -198,6 +242,22 @@ def get_dashboard_stats():
     cursor.execute("SELECT topic, COUNT(*) as count FROM feedback GROUP BY topic ORDER BY count DESC")
     topic_counts = {row['topic']: row['count'] for row in cursor.fetchall()}
 
+    # Triage totals
+    cursor.execute("SELECT COUNT(*) FROM triage_logs")
+    total_triages = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM triage_logs WHERE urgency = 'EMERGENCY'")
+    emergency_triages = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM triage_logs WHERE urgency = 'SEE SOON'")
+    see_soon_triages = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM triage_logs WHERE urgency = 'ROUTINE'")
+    routine_triages = cursor.fetchone()[0]
+
+    cursor.execute("SELECT predicted_specialty, COUNT(*) as count FROM triage_logs GROUP BY predicted_specialty ORDER BY count DESC")
+    specialty_counts = {row['predicted_specialty']: row['count'] for row in cursor.fetchall()}
+
     conn.close()
 
     # Compute percentages safely
@@ -217,7 +277,12 @@ def get_dashboard_stats():
         "positive_pct": pos_pct,
         "negative_pct": neg_pct,
         "neutral_pct": neu_pct,
-        "topic_counts": topic_counts
+        "topic_counts": topic_counts,
+        "total_triages": total_triages,
+        "emergency_triages": emergency_triages,
+        "see_soon_triages": see_soon_triages,
+        "routine_triages": routine_triages,
+        "specialty_counts": specialty_counts
     }
 
 # Seed sample data for demonstration if database is empty
@@ -261,6 +326,44 @@ def seed_initial_data():
         ]
         for f in sample_fb:
             insert_feedback(*f)
+
+    # Seed initial triage records if empty
+    cursor.execute("SELECT COUNT(*) FROM triage_logs")
+    if cursor.fetchone()[0] == 0:
+        sample_triages = [
+            (
+                "Crushing chest pressure radiating to left arm and sweating cold",
+                "Cardiology",
+                96.4,
+                json.dumps([{"specialty": "Cardiology", "probability": 96.4}, {"specialty": "Pulmonology", "probability": 2.1}, {"specialty": "General Physician", "probability": 1.5}]),
+                "EMERGENCY",
+                "Cardiac / Acute Coronary Syndrome"
+            ),
+            (
+                "High fever 103F for 4 days with severe right lower belly pain",
+                "Gastroenterology",
+                89.2,
+                json.dumps([{"specialty": "Gastroenterology", "probability": 89.2}, {"specialty": "General Physician", "probability": 7.4}, {"specialty": "Orthopedics", "probability": 3.4}]),
+                "SEE SOON",
+                "Prolonged High Pyrexia; Acute Abdominal Pain"
+            ),
+            (
+                "Mild dry itchy red rash on both elbows for two weeks",
+                "Dermatology",
+                95.8,
+                json.dumps([{"specialty": "Dermatology", "probability": 95.8}, {"specialty": "General Physician", "probability": 3.1}, {"specialty": "Orthopedics", "probability": 1.1}]),
+                "ROUTINE",
+                "None"
+            )
+        ]
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for t in sample_triages:
+            cursor.execute("""
+                INSERT INTO triage_logs (
+                    timestamp, symptom_text, predicted_specialty, confidence, top_3_json, urgency, red_flags_matched
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (now, t[0], t[1], t[2], t[3], t[4], t[5]))
+        conn.commit()
 
     conn.close()
 

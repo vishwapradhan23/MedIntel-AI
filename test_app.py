@@ -127,6 +127,83 @@ class HealthcareAISystemTestCase(unittest.TestCase):
         self.assertTrue(data['success'])
         self.assertIn("predictions", data)
         self.assertIn("feedback", data)
+        self.assertIn("triages", data)
+
+    def test_09_triage_api_emergency_cardiac(self):
+        """Test Symptom Triage API: Cardiac Red-Flag triggers EMERGENCY & Cardiology."""
+        payload = {
+            "symptoms": "Severe crushing chest pain since morning, spreading to my left arm with cold sweat"
+        }
+        response = self.client.post('/api/triage', json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['urgency'], "EMERGENCY")
+        self.assertEqual(data['suggested_specialty'], "Cardiology")
+        self.assertGreater(len(data['red_flags']), 0)
+        self.assertEqual(len(data['top_3']), 3)
+        self.assertIn("disclaimer", data)
+
+    def test_10_triage_api_emergency_neurology_fast(self):
+        """Test Symptom Triage API: Stroke FAST Red-Flag triggers EMERGENCY & Neurology."""
+        payload = {
+            "symptoms": "Sudden facial droop and slurred speech when trying to talk"
+        }
+        response = self.client.post('/api/triage', json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['urgency'], "EMERGENCY")
+        self.assertEqual(data['suggested_specialty'], "Neurology")
+        self.assertIn("Stroke", data['red_flags'][0]['category'])
+
+    def test_11_triage_api_routine_dermatology(self):
+        """Test Symptom Triage API: Non-urgent dermatological rash classifies as ROUTINE."""
+        payload = {
+            "symptoms": "Extremely itchy red rash and dry flaky patches on both elbows for the past two weeks"
+        }
+        response = self.client.post('/api/triage', json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['urgency'], "ROUTINE")
+        self.assertEqual(data['suggested_specialty'], "Dermatology")
+        self.assertEqual(len(data['red_flags']), 0)
+
+    def test_12_triage_api_negation_handling(self):
+        """Test Symptom Triage API: Correctly parses negated symptoms without false specialty triggers."""
+        payload = {
+            "symptoms": "no fever or cough but severe sharp pain in lower right abdomen with vomiting"
+        }
+        response = self.client.post('/api/triage', json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['suggested_specialty'], "Gastroenterology")
+        self.assertIn(data['urgency'], ["SEE SOON", "EMERGENCY"])
+
+    def test_13_triage_api_invalid_input(self):
+        """Test Symptom Triage API: Rejects empty or too-short symptom descriptions."""
+        payload = {"symptoms": "a"}
+        response = self.client.post('/api/triage', json=payload)
+        self.assertEqual(response.status_code, 400)
+        data = response.get_json()
+        self.assertFalse(data['success'])
+        self.assertIn("at least 3 characters", data['error'])
+
+    def test_14_triage_metrics_endpoint(self):
+        """Test Model Metrics API returns triage metrics."""
+        response = self.client.get('/api/metrics')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['success'])
+        self.assertIn("triage_metrics", data)
+
+    def test_15_triage_page_view(self):
+        """Test GET /triage renders triage HTML page successfully."""
+        response = self.client.get('/triage')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Symptom Triage with Red-Flag Detection", response.data)
 
 if __name__ == '__main__':
     print("=" * 60)

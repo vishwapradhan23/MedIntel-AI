@@ -1,16 +1,16 @@
 {
     "sentiment_metrics": {
-        "accuracy": 59.26,
-        "precision": 62.52,
-        "recall": 59.26,
-        "f1_score": 58.56,
+        "accuracy": 72.0,
+        "precision": 72.15,
+        "recall": 72.0,
+        "f1_score": 72.04,
         "algorithm": "Multinomial Na\u00efve Bayes (TF-IDF)"
     },
     "topic_metrics": {
-        "accuracy": 70.0,
-        "precision": 76.5,
-        "recall": 70.0,
-        "f1_score": 70.2,
+        "accuracy": 81.0,
+        "precision": 82.13,
+        "recall": 81.0,
+        "f1_score": 80.78,
         "algorithm": "Multinomial Na\u00efve Bayes (TF-IDF)",
         "categories": [
             "Doctor/Consultation",

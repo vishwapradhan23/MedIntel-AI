@@ -47,3 +47,6 @@ venv.bak/
 
 # Logs
 *.log
+
+# Windows Runner Bridge
+powershell.bat

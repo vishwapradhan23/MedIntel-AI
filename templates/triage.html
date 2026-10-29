@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Symptom Triage with Red-Flag Detection - MedIntel AI{% endblock %}
+
+{% block content %}
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+        <h1 class="page-title" style="margin-bottom: 0.25rem;">Symptom Triage with Red-Flag Detection</h1>
+        <p style="color: var(--light-text); font-size: 0.95rem;">
+            Clinical decision support: Free-text symptom evaluation, urgency grading (EMERGENCY / SEE SOON / ROUTINE), and top-3 medical specialties.
+        </p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a href="{{ url_for('prediction_analytics_page') }}" class="btn btn-secondary btn-sm">
+            View Analytics →
+        </a>
+    </div>
+</div>
+
+<!-- Alert notification container -->
+<div id="alertContainer"></div>
+
+<div class="grid-2">
+    <!-- Left Column: Input Form Card -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 class="card-title" style="margin-bottom: 0;">Patient Symptom Description</h2>
+        </div>
+
+        <p style="color: var(--light-text); font-size: 0.88rem; margin-bottom: 0.75rem;">
+            Select a sample clinical vignette or type your symptoms freely:
+        </p>
+
+        <!-- Quick Sample Pills -->
+        <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.25rem;">
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; border-color: #ef9a9a; color: #b71c1c;" onclick="fillSampleTriage('Severe crushing chest pain since morning, spreading to my left arm and jaw with cold sweating')">
+                🚨 Sample: Chest Pain (Emergency)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; border-color: #ef9a9a; color: #b71c1c;" onclick="fillSampleTriage('Sudden numbness on one side of face and slurred speech when trying to talk')">
+                🚨 Sample: Stroke FAST (Emergency)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem; border-color: #ffe082; color: #b75500;" onclick="fillSampleTriage('High fever 103F for 4 days and intense sharp pain in lower right abdomen with nausea')">
+                ⚠️ Sample: Acute Abdomen (See Soon)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;" onclick="fillSampleTriage('Extremely itchy red rash and dry flaky patches on both elbows for the past two weeks')">
+                🩺 Sample: Rash (Routine Dermatology)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;" onclick="fillSampleTriage('Persistent dry wheezing cough and tight congested chest for three weeks without fever')">
+                🩺 Sample: Wheeze (Pulmonology)
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.78rem;" onclick="fillSampleTriage('Excessive unquenchable thirst, drinking gallons of water and peeing five times every night')">
+                🩺 Sample: Polyuria (Endocrinology)
+            </button>
+        </div>
+
+        <form id="triageForm">
+            <div class="form-group">
+                <label class="form-label" for="symptomsText">Describe Symptoms, Durations & Sensations</label>
+                <textarea id="symptomsText" name="symptoms" class="form-control" rows="6" 
+                          placeholder="Type free-text symptoms here (e.g., 'crushing chest pain radiating to my left arm since this morning', or 'dry itchy red rash on elbows since 2 weeks')..." 
+                          required style="resize: vertical;"></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                <span id="charCount" style="font-size: 0.8rem; color: var(--light-text);">0 characters</span>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="min-width: 200px;">
+                    Analyze Symptoms & Triage →
+                </button>
+            </div>
+        </form>
+
+        <!-- Informational Tips -->
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 0.82rem; color: var(--light-text); line-height: 1.5;">
+                <strong style="color: var(--dark-text);">Triage Guidelines:</strong>
+                <ul style="padding-left: 1.2rem; margin-top: 0.3rem;">
+                    <li>Include durations (e.g. <em>"since 3 days"</em>, <em>"started suddenly"</em>).</li>
+                    <li>Negations are understood (e.g. <em>"no fever but severe abdominal cramps"</em>).</li>
+                    <li>All processing runs 100% locally on your machine with zero external cloud APIs.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Output Card -->
+    <div>
+        <!-- Initial Placeholder Card -->
+        <div class="card" id="placeholderCard" style="text-align: center; padding: 3rem 1.5rem; color: var(--light-text);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🩺</div>
+            <h3 style="color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 0.5rem;">Awaiting Symptom Submission</h3>
+            <p style="font-size: 0.9rem; max-width: 400px; margin: 0 auto; line-height: 1.5;">
+                Enter a patient's symptoms or choose a sample vignette on the left. The local AI engine will evaluate urgency levels, red flags, and top-3 medical specialty probabilities.
+            </p>
+        </div>
+
+        <!-- Result Evaluation Card (Hidden initially) -->
+        <div class="card" id="resultCard" style="display: none; border-left: 5px solid var(--primary-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 class="card-title" style="margin-bottom: 0;">Triage Assessment Result</h2>
+                <span id="logBadge" class="badge badge-info" style="font-size: 0.75rem;">Audit Logged</span>
+            </div>
+
+            <!-- Urgency Level Section -->
+            <div style="background: var(--bg-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;">
+                <div style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Urgency Classification
+                </div>
+                <div id="urgencyBadgeContainer" style="margin: 0.4rem 0 0.8rem 0;">
+                    <!-- Urgency Badge injected here -->
+                </div>
+                <div id="actionAdviceText" style="font-size: 0.92rem; font-weight: 600; color: var(--dark-text); max-width: 500px; margin: 0 auto;">
+                    <!-- Action advice injected here -->
+                </div>
+            </div>
+
+            <!-- Red-Flags Alert Box (Rendered only when red flags triggered) -->
+            <div id="redFlagContainer" style="display: none;">
+                <div class="red-flag-alert">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem;">
+                        <span>⚠️</span>
+                        <span>Clinical Red Flags Detected</span>
+                    </div>
+                    <div id="redFlagList">
+                        <!-- Flag items injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggested Medical Specialty Section -->
+            <div style="margin-bottom: 1.25rem;">
+                <div style="font-size: 0.85rem; color: var(--light-text); margin-bottom: 0.3rem;">Primary Suggested Specialty</div>
+                <div style="display: flex; align-items: baseline; gap: 0.75rem;">
+                    <h3 id="primarySpecialtyName" style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 800; margin: 0;">
+                        -
+                    </h3>
+                    <span id="primaryConfidence" class="badge badge-success" style="font-size: 0.85rem;">
+                        -
+                    </span>
+                </div>
+            </div>
+
+            <!-- Top-3 Probabilities Distribution -->
+            <div style="margin-bottom: 1.25rem;">
+                <h4 style="font-size: 0.92rem; color: var(--dark-text); margin-bottom: 0.6rem;">Top-3 Specialty Probabilities</h4>
+                <div id="top3Container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Probability bars injected here -->
+                </div>
+            </div>
+
+            <!-- Salient Terms for Explainability -->
+            <div style="margin-bottom: 1rem;">
+                <h4 style="font-size: 0.88rem; color: var(--light-text); margin-bottom: 0.4rem;">Key Extracted Terms (Explainability)</h4>
+                <div id="salientTermsContainer" style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                    <!-- Term chips injected here -->
+                </div>
+            </div>
+
+            <!-- Non-Diagnostic Clinical Disclaimer -->
+            <div class="disclaimer-card">
+                <strong>Educational & Decision Support Disclaimer:</strong>
+                <p id="disclaimerText" style="margin-top: 0.25rem;">
+                    This triage assessment is generated locally by statistical machine learning models and deterministic red-flag clinical rules. It provides decision support and does NOT constitute a medical diagnosis. If you have any life-threatening symptoms, call emergency services immediately.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const textarea = document.getElementById('symptomsText');
+    const charCount = document.getElementById('charCount');
+    const triageForm = document.getElementById('triageForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const placeholderCard = document.getElementById('placeholderCard');
+    const resultCard = document.getElementById('resultCard');
+    const alertContainer = document.getElementById('alertContainer');
+
+    // Real-time character counter
+    textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        charCount.textContent = `${len} character${len === 1 ? '' : 's'}`;
+    });
+
+    // Populate textarea with sample vignettes
+    function fillSampleTriage(text) {
+        textarea.value = text;
+        charCount.textContent = `${text.length} characters`;
+        textarea.focus();
+    }
+
+    // Helper to display alert notifications
+    function showAlert(message, type = 'danger') {
+        alertContainer.innerHTML = `
+            <div class="alert alert-${type}" style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>${message}</span>
+                <button type="button" onclick="this.parentElement.remove()" style="background: none; border: none; font-size: 1.1rem; cursor: pointer; color: inherit;">&times;</button>
+            </div>
+        `;
+    }
+
+    // Form submission handler
+    triageForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const symptoms = textarea.value.trim();
+
+        if (symptoms.length < 3) {
+            showAlert('Please enter at least 3 characters describing symptoms.', 'warning');
+            return;
+        }
+
+        // Set loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Analyzing Symptoms...';
+        alertContainer.innerHTML = '';
+
+        try {
+            const response = await fetch('/api/triage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symptoms: symptoms })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                showAlert(data.error || 'Failed to complete symptom triage assessment.', 'danger');
+                return;
+            }
+
+            renderTriageResults(data);
+
+        } catch (err) {
+            showAlert(`Network or server connection error: ${err.message}`, 'danger');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Analyze Symptoms & Triage →';
+        }
+    });
+
+    // Render triage results into the UI
+    function renderTriageResults(data) {
+        placeholderCard.style.display = 'none';
+        resultCard.style.display = 'block';
+
+        // 1. Urgency Badge & Action Advice
+        const urgencyContainer = document.getElementById('urgencyBadgeContainer');
+        const adviceContainer = document.getElementById('actionAdviceText');
+        const urgency = data.urgency || 'ROUTINE';
+
+        let badgeClass = 'urgency-badge-routine';
+        let badgeIcon = '🟢';
+        let borderColor = 'var(--success-color)';
+
+        if (urgency === 'EMERGENCY') {
+            badgeClass = 'urgency-badge-emergency';
+            badgeIcon = '🚨';
+            borderColor = 'var(--danger-color)';
+        } else if (urgency === 'SEE SOON') {
+            badgeClass = 'urgency-badge-see-soon';
+            badgeIcon = '⚠️';
+            borderColor = 'var(--warning-color)';
+        }
+
+        urgencyContainer.innerHTML = `
+            <div class="urgency-badge ${badgeClass}">
+                <span>${badgeIcon}</span>
+                <span>${urgency}</span>
+            </div>
+        `;
+        adviceContainer.textContent = data.action_advice || '';
+        resultCard.style.borderLeftColor = borderColor;
+
+        // 2. Red Flags Container
+        const redFlagBox = document.getElementById('redFlagContainer');
+        const redFlagList = document.getElementById('redFlagList');
+
+        if (data.red_flags && data.red_flags.length > 0) {
+            redFlagBox.style.display = 'block';
+            redFlagList.innerHTML = data.red_flags.map(flag => `
+                <div class="red-flag-item">
+                    <span style="font-weight: 700; color: #b71c1c;">• ${flag.category}:</span>
+                    <span>${flag.explanation}</span>
+                </div>
+            `).join('');
+        } else {
+            redFlagBox.style.display = 'none';
+            redFlagList.innerHTML = '';
+        }
+
+        // 3. Primary Specialty
+        document.getElementById('primarySpecialtyName').textContent = data.suggested_specialty;
+        document.getElementById('primaryConfidence').textContent = `${data.confidence}% Probability`;
+
+        // 4. Top-3 Specialty Distribution Bars
+        const top3Box = document.getElementById('top3Container');
+        top3Box.innerHTML = '';
+
+        if (data.top_3 && data.top_3.length > 0) {
+            data.top_3.forEach((item, index) => {
+                const isTop = index === 0;
+                const barRow = document.createElement('div');
+                barRow.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.2rem;">
+                        <span style="font-weight: ${isTop ? '700' : '500'}; color: ${isTop ? 'var(--primary-dark)' : 'var(--dark-text)'};">
+                            ${index + 1}. ${item.specialty} ${isTop ? '★' : ''}
+                        </span>
+                        <strong style="color: ${isTop ? 'var(--primary-color)' : 'var(--light-text)'};">
+                            ${item.probability}%
+                        </strong>
+                    </div>
+                    <div class="probability-bar-track">
+                        <div class="probability-bar-fill" style="width: ${Math.max(item.probability, 3)}%; ${isTop ? '' : 'background: #90caf9;'}"></div>
+                    </div>
+                `;
+                top3Box.appendChild(barRow);
+            });
+        }
+
+        // 5. Salient Terms Chips
+        const termsBox = document.getElementById('salientTermsContainer');
+        termsBox.innerHTML = '';
+        if (data.salient_terms && data.salient_terms.length > 0) {
+            data.salient_terms.forEach(term => {
+                const chip = document.createElement('span');
+                chip.className = 'prompt-pill';
+                chip.style.cursor = 'default';
+                chip.textContent = `#${term}`;
+                termsBox.appendChild(chip);
+            });
+        } else {
+            termsBox.innerHTML = '<span style="color: var(--light-text); font-size: 0.82rem;">None</span>';
+        }
+
+        // 6. Disclaimer
+        if (data.disclaimer) {
+            document.getElementById('disclaimerText').textContent = data.disclaimer;
+        }
+
+        // Smooth scroll to result card on mobile view
+        if (window.innerWidth < 900) {
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,272 @@
+{
+    "primary_model": {
+        "name": "Logistic Regression (Balanced) + TF-IDF (1,2)",
+        "accuracy": 93.45,
+        "precision": 93.68,
+        "recall": 93.45,
+        "macro_f1": 93.38,
+        "weighted_f1": 93.38,
+        "vocabulary_size": 3321,
+        "per_class_metrics": {
+            "Cardiology": {
+                "precision": 90.91,
+                "recall": 95.24,
+                "f1_score": 93.02,
+                "support": 21.0
+            },
+            "Dermatology": {
+                "precision": 91.3,
+                "recall": 100.0,
+                "f1_score": 95.45,
+                "support": 21.0
+            },
+            "Endocrinology": {
+                "precision": 95.0,
+                "recall": 90.48,
+                "f1_score": 92.68,
+                "support": 21.0
+            },
+            "Gastroenterology": {
+                "precision": 95.24,
+                "recall": 95.24,
+                "f1_score": 95.24,
+                "support": 21.0
+            },
+            "General Physician": {
+                "precision": 95.24,
+                "recall": 95.24,
+                "f1_score": 95.24,
+                "support": 21.0
+            },
+            "Neurology": {
+                "precision": 100.0,
+                "recall": 80.95,
+                "f1_score": 89.47,
+                "support": 21.0
+            },
+            "Orthopedics": {
+                "precision": 90.48,
+                "recall": 90.48,
+                "f1_score": 90.48,
+                "support": 21.0
+            },
+            "Pulmonology": {
+                "precision": 91.3,
+                "recall": 100.0,
+                "f1_score": 95.45,
+                "support": 21.0
+            }
+        },
+        "confusion_matrix": {
+            "labels": [
+                "Cardiology",
+                "Dermatology",
+                "Endocrinology",
+                "Gastroenterology",
+                "General Physician",
+                "Neurology",
+                "Orthopedics",
+                "Pulmonology"
+            ],
+            "matrix": [
+                [
+                    20,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    21,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    2,
+                    19,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    20,
+                    0,
+                    0,
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    0,
+                    1,
+                    0,
+                    20,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    2,
+                    0,
+                    0,
+                    0,
+                    0,
+                    17,
+                    2,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    19,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    21
+                ]
+            ]
+        },
+        "top_features": {
+            "Cardiology": [
+                "chest",
+                "heart",
+                "pulse",
+                "climbing",
+                "pressure",
+                "palpitations",
+                "palpitations and",
+                "chest tightness",
+                "crushing",
+                "crushing chest"
+            ],
+            "Dermatology": [
+                "red",
+                "on",
+                "skin",
+                "itchy",
+                "rash",
+                "itching",
+                "flaky",
+                "skin on",
+                "patches",
+                "across"
+            ],
+            "Endocrinology": [
+                "thirst",
+                "unexplained",
+                "waking up",
+                "hair",
+                "excessive",
+                "weight",
+                "sluggishness in",
+                "sluggishness",
+                "in morning",
+                "and sluggishness"
+            ],
+            "Gastroenterology": [
+                "after",
+                "abdominal",
+                "vomiting",
+                "stomach",
+                "cramps",
+                "watery",
+                "meals",
+                "nausea and",
+                "persistent vomiting",
+                "and persistent"
+            ],
+            "General Physician": [
+                "fever",
+                "chills",
+                "shivering",
+                "high fever",
+                "body",
+                "general malaise",
+                "general",
+                "malaise",
+                "weakness",
+                "feeling"
+            ],
+            "Neurology": [
+                "spinning",
+                "headache",
+                "side",
+                "light",
+                "balance",
+                "tremors in",
+                "tremors",
+                "in",
+                "sensitivity",
+                "vertigo"
+            ],
+            "Orthopedics": [
+                "pain",
+                "joint",
+                "stiffness",
+                "knee",
+                "stiff",
+                "swollen",
+                "down",
+                "leg",
+                "stiffness in",
+                "lower back"
+            ],
+            "Pulmonology": [
+                "breath",
+                "coughing",
+                "breathing",
+                "sound",
+                "cough",
+                "congestion",
+                "bronchial",
+                "congestion and",
+                "phlegm",
+                "gasping"
+            ]
+        }
+    },
+    "baselines_comparison": {
+        "multinomial_nb": {
+            "name": "Multinomial Naive Bayes (TF-IDF 1,2)",
+            "accuracy": 91.67,
+            "macro_f1": 91.66,
+            "weighted_f1": 91.66
+        },
+        "unigram_only": {
+            "name": "Logistic Regression (TF-IDF 1,1 Unigram Only)",
+            "accuracy": 94.64,
+            "macro_f1": 94.58,
+            "weighted_f1": 94.58
+        },
+        "sentence_transformers": {
+            "available": false,
+            "note": "Sentence-Transformers not active locally (No module named 'sentence_transformers')"
+        }
+    },
+    "academic_note": "Evaluated on strictly held-out hand-written test set (data/triage_test.csv). Metrics are indicative decision support evaluations."
+}

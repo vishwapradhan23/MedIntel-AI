@@ -18,6 +18,8 @@ from flask import Flask, render_template, request, jsonify
 
 import database
 import train_nlp
+import train_triage
+import triage_engine
 from chatbot import chatbot_engine
 
 app = Flask(__name__)
@@ -37,20 +39,33 @@ sentiment_vectorizer = None
 topic_model = None
 topic_vectorizer = None
 
+triage_model = None
+triage_vectorizer = None
+
 disease_metrics_data = {}
 nlp_metrics_data = {}
+triage_metrics_data = {}
 
 def load_all_models():
     """Load serialized models, vectorizers, and metrics JSON files into memory."""
     global knn_model, naive_bayes_model, scaler
     global sentiment_model, sentiment_vectorizer, topic_model, topic_vectorizer
-    global disease_metrics_data, nlp_metrics_data
+    global triage_model, triage_vectorizer
+    global disease_metrics_data, nlp_metrics_data, triage_metrics_data
 
     # Retrain NLP models on startup to ensure latest dataset entries are included
     try:
         train_nlp.main()
     except Exception as e:
         print(f"Warning: NLP retraining on launch skipped: {e}")
+
+    # Ensure Triage models are trained and serialized
+    try:
+        triage_m_path = os.path.join(MODEL_DIR, "triage_model.pkl")
+        if not os.path.exists(triage_m_path):
+            train_triage.train_and_evaluate()
+    except Exception as e:
+        print(f"Warning: Triage training on launch skipped: {e}")
 
     # Ensure DB is initialized and seeded
     database.init_db()
@@ -93,7 +108,24 @@ def load_all_models():
         with open(nlp_metrics_path, 'r', encoding='utf-8') as f:
             nlp_metrics_data = json.load(f)
 
-    print("All ML & NLP models and metrics loaded successfully!")
+    # Load Triage Models & Metrics
+    triage_m_path = os.path.join(MODEL_DIR, "triage_model.pkl")
+    triage_v_path = os.path.join(MODEL_DIR, "triage_vectorizer.pkl")
+    triage_metrics_path = os.path.join(MODEL_DIR, "triage_metrics.json")
+
+    if os.path.exists(triage_m_path):
+        triage_model = joblib.load(triage_m_path)
+    if os.path.exists(triage_v_path):
+        triage_vectorizer = joblib.load(triage_v_path)
+
+    if os.path.exists(triage_metrics_path):
+        with open(triage_metrics_path, 'r', encoding='utf-8') as f:
+            triage_metrics_data = json.load(f)
+
+    # Reload triage engine model references
+    triage_engine.load_triage_artifacts()
+
+    print("All ML, NLP & Triage models and metrics loaded successfully!")
 
 # Initialize models on launch
 load_all_models()
@@ -146,6 +178,11 @@ def dashboard_page():
 def history_page():
     """Redirect to Prediction Analytics."""
     return render_template('prediction_analytics.html', active_page='prediction-analytics')
+
+@app.route('/triage')
+def triage_page():
+    """Module 8: Symptom Triage with Red-Flag Detection Page."""
+    return render_template('triage.html', active_page='triage')
 
 # =============================================================================
 # API ENDPOINTS (JSON BACKEND SERVICES)
@@ -386,6 +423,38 @@ def api_chatbot():
     except Exception as e:
         return jsonify({"success": False, "error": f"Chatbot Error: {str(e)}"}), 500
 
+@app.route('/api/triage', methods=['POST'])
+def api_triage():
+    """
+    API Endpoint for Module 8: Symptom Triage with Red-Flag Detection.
+    Receives free-text symptoms, identifies clinical Red Flags, urgency level,
+    and top-3 suggested medical specialty probabilities.
+    """
+    try:
+        data = request.get_json() if request.is_json else request.form.to_dict()
+        symptoms = data.get('symptoms', '').strip() if data else ''
+
+        if not symptoms or len(symptoms) < 3:
+            return jsonify({"success": False, "error": "Please describe your symptoms (at least 3 characters)."}), 400
+
+        result = triage_engine.predict_triage(symptoms)
+
+        # Save to SQLite Database
+        red_flags_str = "; ".join([f"{f['category']}: {f['explanation']}" for f in result['red_flags']]) if result['red_flags'] else "None"
+        log_id = database.insert_triage_log(
+            symptom_text=symptoms,
+            predicted_specialty=result['suggested_specialty'],
+            confidence=result['confidence'],
+            top_3_json=json.dumps(result['top_3']),
+            urgency=result['urgency'],
+            red_flags_matched=red_flags_str
+        )
+        result['triage_id'] = log_id
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Triage Processing Error: {str(e)}"}), 500
+
 @app.route('/api/metrics', methods=['GET'])
 def api_metrics():
     """
@@ -395,7 +464,8 @@ def api_metrics():
         "success": True,
         "disease_metrics": disease_metrics_data.get("metrics", {}),
         "best_disease_model": disease_metrics_data.get("best_model", "KNN"),
-        "nlp_metrics": nlp_metrics_data
+        "nlp_metrics": nlp_metrics_data,
+        "triage_metrics": triage_metrics_data
     })
 
 @app.route('/api/dashboard', methods=['GET'])
@@ -417,10 +487,12 @@ def api_history():
     """
     predictions = database.get_all_predictions(limit=50)
     feedback = database.get_all_feedback(limit=50)
+    triages = database.get_all_triage_logs(limit=50)
     return jsonify({
         "success": True,
         "predictions": predictions,
-        "feedback": feedback
+        "feedback": feedback,
+        "triages": triages
     })
 
 if __name__ == '__main__':

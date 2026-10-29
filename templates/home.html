@@ -28,6 +28,22 @@
     <h2 class="card-title">Healthcare Modules</h2>
     <div class="grid-2" style="margin-top: 1.25rem;">
         
+        <!-- Symptom Triage with Red-Flag Detection -->
+        <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--accent-color);">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <h3 style="color: var(--primary-dark); font-size: 1.15rem; margin-bottom: 0;">Symptom Triage & Red-Flag Detection</h3>
+                    <span class="badge badge-info" style="font-size: 0.72rem; text-transform: uppercase;">New Decision Support</span>
+                </div>
+                <p style="color: var(--light-text); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">
+                    Evaluates free-text patient symptoms to identify life-threatening clinical Red Flags, determine urgency (EMERGENCY / SEE SOON / ROUTINE), and recommend top-3 medical specialties.
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <a href="{{ url_for('triage_page') }}" class="btn btn-primary btn-sm">Start Symptom Triage →</a>
+            </div>
+        </div>
+
         <!-- Disease Prediction -->
         <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
             <div>

@@ -441,6 +441,100 @@ textarea.form-control {
     color: #ffffff;
 }
 
+/* SYMPTOM TRIAGE & RED-FLAG STYLES */
+.urgency-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.urgency-badge-emergency {
+    background-color: var(--danger-color);
+    color: #ffffff;
+    box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(211, 47, 47, 0);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(211, 47, 47, 0);
+        transform: scale(1);
+    }
+}
+
+.urgency-badge-see-soon {
+    background-color: var(--warning-bg);
+    color: #b75500;
+    border: 2px solid var(--warning-color);
+}
+
+.urgency-badge-routine {
+    background-color: var(--success-bg);
+    color: var(--success-color);
+    border: 2px solid #81c784;
+}
+
+.red-flag-alert {
+    background-color: var(--danger-bg);
+    border: 1px solid #ef9a9a;
+    border-left: 5px solid var(--danger-color);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.35rem;
+    margin: 1.25rem 0;
+    color: #5f1515;
+}
+
+.red-flag-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    font-size: 0.92rem;
+}
+
+.probability-bar-track {
+    background: #edf2f7;
+    border-radius: 50px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 0.35rem;
+}
+
+.probability-bar-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.disclaimer-card {
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.8rem;
+    color: #475569;
+    line-height: 1.5;
+    margin-top: 1.25rem;
+}
+
 /* FOOTER */
 .footer {
     background-color: #ffffff;

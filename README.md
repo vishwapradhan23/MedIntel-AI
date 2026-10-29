@@ -16,6 +16,7 @@ MedIntel AI bridges structured physiological measurements and unstructured clini
 
 ### Core Capabilities
 
+- **Symptom Triage with Red-Flag Detection**: Evaluates patient free-text symptoms to identify life-threatening clinical Red Flags (FAST stroke indicators, acute coronary syndrome, respiratory failure, gastrointestinal hemorrhage), classifies urgency (*EMERGENCY*, *SEE SOON*, *ROUTINE*), and recommends top-3 medical specialties across 8 clinical domains (*General Physician, Cardiology, Neurology, Gastroenterology, Dermatology, Orthopedics, Pulmonology, Endocrinology*) using TF-IDF (1,2) and Logistic Regression with balanced class weights.
 - **Disease Risk Prediction**: Predicts diabetes risk from 8 clinical features (Glucose, Insulin, BMI, Blood Pressure, Age, etc.) using K-Nearest Neighbors (KNN, $k=7$) and Gaussian Naïve Bayes classifiers with Z-score feature scaling.
 - **Model Comparison Benchmarks**: Empirical side-by-side evaluation of KNN, Gaussian Naïve Bayes, and Logistic Regression on test partition metrics (Accuracy, Precision, Recall, F1-Score, and Confusion Matrices).
 - **Patient Feedback Sentiment Analysis**: Classifies patient reviews into Positive, Negative, or Neutral sentiment using TF-IDF feature extraction and a Multinomial Naïve Bayes classifier.
@@ -73,16 +74,22 @@ MedIntel-AI/
 ├── app.py                         # Main Flask application and REST endpoints
 ├── database.py                    # Database schema definition and query helpers
 ├── chatbot.py                     # Local TF-IDF Cosine Similarity chatbot engine
+├── triage_engine.py               # Symptom triage & clinical red-flag evaluation engine
+├── generate_triage_data.py        # Synthetic train & hand-crafted test data generator
+├── train_triage.py                # Triage model training & baseline benchmarking pipeline
 ├── train_models.py                # Supervised ML model training pipeline
 ├── train_nlp.py                   # NLP TF-IDF and Naive Bayes training pipeline
-├── test_app.py                    # Automated test suite
+├── test_app.py                    # Automated test suite (15 unit and integration tests)
 ├── requirements.txt               # Pinned Python package dependencies
 ├── COMPLETE_PROJECT_REPORT.md     # Detailed academic and technical project report
 ├── README.md                      # Repository overview and setup guide
 │
 ├── data/                          # Data storage
 │   ├── healthcare.db              # SQLite database file
-│   └── intents.json               # Chatbot intent patterns and medical responses
+│   ├── intents.json               # Chatbot intent patterns and medical responses
+│   ├── triage_train.csv           # Synthetic symptom triage training set (~1,600 rows)
+│   ├── triage_test.csv            # Hand-written symptom triage test set (168 rows)
+│   └── README.md                  # Dataset notes and clinical caveats
 │
 ├── datasets/                      # Training datasets
 │   ├── diabetes.csv               # Pima Indians Diabetes benchmark dataset
@@ -98,19 +105,23 @@ MedIntel-AI/
 │   ├── sentiment_vectorizer.pkl   # Fitted TF-IDF vectorizer for sentiment
 │   ├── topic_model.pkl            # Fitted MultinomialNB topic classifier
 │   ├── topic_vectorizer.pkl       # Fitted TF-IDF vectorizer for topics
+│   ├── triage_model.pkl           # Fitted Logistic Regression triage classifier
+│   ├── triage_vectorizer.pkl      # Fitted TF-IDF vectorizer for triage symptoms
 │   ├── disease_metrics.json       # Evaluated test metrics for disease models
-│   └── nlp_metrics.json           # Evaluated test metrics for NLP models
+│   ├── nlp_metrics.json           # Evaluated test metrics for NLP models
+│   └── triage_metrics.json        # Evaluated test metrics & baselines for triage
 │
 ├── static/                        # Frontend assets
 │   ├── css/
-│   │   └── style.css              # Custom responsive stylesheet
+│   │   └── style.css              # Custom responsive stylesheet with triage urgency badges
 │   └── js/
 │       ├── main.js                # Form helpers and sample data injectors
 │       └── charts.js              # Chart.js initialization routines
 │
 └── templates/                     # Jinja2 HTML5 presentation templates
-    ├── base.html                  # Master layout template
+    ├── base.html                  # Master layout template with top navigation
     ├── home.html                  # Platform dashboard and module launcher
+    ├── triage.html                # Symptom triage & red-flag detection interface
     ├── predict.html               # Disease risk prediction interface
     ├── comparison.html            # Model comparison benchmarks and confusion matrices
     ├── sentiment.html             # Patient feedback NLP analysis interface

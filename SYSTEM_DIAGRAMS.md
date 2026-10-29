@@ -1,6 +1,6 @@
 # System Architecture & Academic Diagrams
 
-This document contains complete diagrammatic representations matching the exact implementation of the **AI-Driven Healthcare Prediction & Patient Feedback Analysis System**.
+This document contains complete diagrammatic representations matching the exact implementation of the **MedIntel AI: AI-Driven Healthcare Prediction, Feedback Analysis & Symptom Triage Platform**.
 
 ---
 
@@ -8,33 +8,48 @@ This document contains complete diagrammatic representations matching the exact 
 
 ```mermaid
 graph TD
-    User(["User / Patient"]) <--> WebUI["Web Interface (HTML5 / CSS3 / Vanilla JS)"]
-    WebUI <--> FlaskApp["Flask Backend (app.py)"]
+    User(["User / Clinician / Patient"]) <--> WebUI["Modern Web Interface (HTML5 / CSS3 Glassmorphism / Vanilla JS)"]
+    WebUI <--> FlaskApp["Flask Backend Service (app.py)"]
     
-    subgraph Machine Learning Pipeline
-        FlaskApp -->|Structured Input| Scaler["StandardScaler"]
-        Scaler -->|Scaled Vector| KNN["KNN Model (knn_model.pkl)"]
-        Scaler -->|Scaled Vector| NB["Naïve Bayes Model (naive_bayes_model.pkl)"]
-        KNN -->|Prediction & Probabilities| PredOutput["Disease Prediction Result"]
+    subgraph Structured Biometric Pipeline
+        FlaskApp -->|Structured Biometrics| Scaler["StandardScaler Z-Score Normalization"]
+        Scaler -->|Scaled Vector| KNN["KNN Classifier (knn_model.pkl)"]
+        Scaler -->|Scaled Vector| NB["Gaussian Naïve Bayes (naive_bayes_model.pkl)"]
+        KNN -->|Prediction & Probabilities| PredOutput["Disease Risk Assessment"]
         NB -->|Prediction & Probabilities| PredOutput
     end
 
-    subgraph Natural Language Processing Pipeline
-        FlaskApp -->|Feedback Text| TFIDF["TF-IDF Vectorizer (sentiment_vectorizer.pkl)"]
-        TFIDF -->|TF-IDF Sparse Matrix| MNB_Sent["Multinomial NB (sentiment_model.pkl)"]
-        TFIDF -->|TF-IDF Sparse Matrix| MNB_Topic["Multinomial NB (topic_model.pkl)"]
+    subgraph Unstructured Review NLP Pipeline
+        FlaskApp -->|Feedback Text| TFIDF_Sent["TF-IDF Vectorizer (sentiment_vectorizer.pkl)"]
+        TFIDF_Sent -->|TF-IDF Sparse Matrix| MNB_Sent["Multinomial NB (sentiment_model.pkl)"]
+        TFIDF_Sent -->|TF-IDF Sparse Matrix| MNB_Topic["Multinomial NB (topic_model.pkl)"]
         MNB_Sent -->|Sentiment Label & Confidence| TextOutput["Feedback Analysis Result"]
         MNB_Topic -->|Domain Topic Category| TextOutput
+    end
+
+    subgraph Symptom Triage & Red-Flag Pipeline
+        FlaskApp -->|Free-Text Symptoms| TriageEngine["Triage Engine (triage_engine.py)"]
+        TriageEngine -->|Regex Analysis| RedFlagCheck{"Clinical Red Flags?"}
+        RedFlagCheck -- Emergency Match --> UrgencyEmerg["Urgency: EMERGENCY (Pulse Red Alert)"]
+        RedFlagCheck -- Urgent Match --> UrgencySoon["Urgency: SEE SOON (Amber Alert)"]
+        RedFlagCheck -- No Match --> UrgencyRoutine["Urgency: ROUTINE (Green Standard)"]
+        TriageEngine -->|Preserve Negations| TFIDF_Triage["TF-IDF (1,2) (triage_vectorizer.pkl)"]
+        TFIDF_Triage --> LogReg_Triage["Logistic Regression (triage_model.pkl)"]
+        LogReg_Triage --> Top3Specialties["Top-3 Medical Specialty Probabilities"]
     end
 
     subgraph Intelligent Local Chatbot Engine
         FlaskApp -->|User Query| ChatEngine["HealthcareChatbot (chatbot.py)"]
         ChatEngine -->|Pattern TF-IDF Matrix| CosineSim["Cosine Similarity Matching"]
-        CosineSim -->|Confidence Check >= 15%| IntentResp["Intent Response + Disclaimer"]
+        CosineSim -->|Confidence Check >= 15%| IntentResp["Intent Response + Educational Notice"]
     end
 
     PredOutput -->|Insert Record| DB[("SQLite Database (healthcare.db)")]
     TextOutput -->|Insert Record| DB
+    UrgencyEmerg --> DB
+    UrgencySoon --> DB
+    UrgencyRoutine --> DB
+    Top3Specialties --> DB
     IntentResp -->|Log Query| DB
 
     DB -->|Fetch Analytics & History| WebUI
@@ -73,7 +88,38 @@ flowchart TD
 
 ---
 
-## 3. NLP Flowchart (Sentiment & Topic Classification)
+## 3. Symptom Triage & Red-Flag Clinical Flowchart
+
+```mermaid
+flowchart TD
+    Start([Start]) --> PatientInput[/Patient Enters Free-Text Symptoms/]
+    PatientInput --> CleanText["Normalize Text (Preserve Negations: no, not, without, never, dont)"]
+    
+    CleanText --> RedFlagCheck{"Check Deterministic Red-Flag Rules"}
+    RedFlagCheck -- Severe Cardiac / Stroke FAST / Bleed / Airway Compromise --> SetEmergency["Urgency = EMERGENCY; Trigger Pulsing Red Banner & Immediate 911/112 Advice"]
+    RedFlagCheck -- High Fever >3 Days / Appendicitis / Severe Dehydration --> SetSoon["Urgency = SEE SOON; Trigger Amber Warning & 24-48h Consultation Advice"]
+    RedFlagCheck -- Mild Chronic / Elective Symptoms --> SetRoutine["Urgency = ROUTINE; Trigger Green Standard Elective Appointment Advice"]
+    
+    CleanText --> VectorizeTriage["TF-IDF Vectorizer (Unigrams + Bigrams, Sublinear TF)"]
+    VectorizeTriage --> ModelPredict["Logistic Regression (Balanced Class Weights)"]
+    ModelPredict --> CalcProba["Compute Softmax Probabilities across 8 Specialties"]
+    CalcProba --> RankTop3["Extract & Rank Top-3 Probabilities (%)"]
+    
+    SetEmergency --> MergeResult["Synthesize Triage Report"]
+    SetSoon --> MergeResult
+    SetRoutine --> MergeResult
+    RankTop3 --> MergeResult
+    
+    MergeResult --> ExtractTerms["Extract Salient Terms for Clinical Explainability"]
+    ExtractTerms --> AppendDisclaimer["Append Non-Diagnostic Decision Support Disclaimer"]
+    AppendDisclaimer --> SaveSQL[(Persist Transaction in SQLite Table: triage_logs)]
+    SaveSQL --> RenderTriageUI[/Display Urgency Badge, Top-3 Probability Bars & Red-Flag Warnings/]
+    RenderTriageUI --> End([End])
+```
+
+---
+
+## 4. NLP Flowchart (Feedback Sentiment & Topic Classification)
 
 ```mermaid
 flowchart TD
@@ -99,7 +145,7 @@ flowchart TD
 
 ---
 
-## 4. Chatbot Flowchart (Local Intent Engine)
+## 5. Chatbot Flowchart (Local Intent Engine)
 
 ```mermaid
 flowchart TD
@@ -110,7 +156,7 @@ flowchart TD
     CleanQuery --> CosineMatch["Compute Cosine Similarity against all Intent Vectors"]
     CosineMatch --> FindMax["Find Max Similarity Score & Matched Intent Tag"]
     FindMax --> ThresholdCheck{"Is Max Score >= 0.15?"}
-    ThresholdCheck -- Yes --> SelectResponse["Select Random Response for Matched Intent Tag"]
+    ThresholdCheck -- Yes --> SelectResponse["Select Response for Matched Intent Tag"]
     ThresholdCheck -- No --> SelectFallback["Select Unknown Fallback Response"]
     SelectResponse --> MedicalCheck{"Is Medical Intent?"}
     MedicalCheck -- Yes --> AppendDisclaimer["Append Medical Disclaimer"]
@@ -124,37 +170,12 @@ flowchart TD
 
 ---
 
-## 5. Use Case Diagram
-
-```mermaid
-gantt
-    title Use Case Interaction Diagram
-    dateFormat  X
-    axisFormat %s
-
-    section User Actions
-    Disease Risk Prediction       :active, u1, 0, 1
-    Model Comparison Overview    :active, u2, 1, 2
-    Feedback Sentiment Analysis   :active, u3, 2, 3
-    Interactive Chatbot Query     :active, u4, 3, 4
-    View Dashboard & Log History :active, u5, 4, 5
-
-    section System Responses
-    ML Scaling & Inference        :active, s1, 0, 1
-    Render Metrics & Bar Chart    :active, s2, 1, 2
-    TF-IDF Vectorization & MNB    :active, s3, 2, 3
-    Cosine Similarity Intent      :active, s4, 3, 4
-    SQLite Database Query         :active, s5, 4, 5
-```
-
----
-
 ## 6. Data Flow Diagram Level 0 (Context Diagram)
 
 ```mermaid
 flowchart LR
-    User(["User / Patient"]) -->|Health Parameters / Text / Query| System[["Healthcare AI System (app.py)"]]
-    System -->|Prediction Results / Sentiment / Chatbot Response / Stats| User
+    User(["User / Patient / Clinician"]) -->|Health Biometrics / Symptoms / Feedback / Query| System[["MedIntel AI Platform (Flask app.py)"]]
+    System -->|Risk Prediction / Triage Urgency & Specialties / Sentiment / Chat Responses / Analytics| User
 ```
 
 ---
@@ -163,27 +184,34 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    User(["User"]) -->|1. Health Parameters| P1["1.0 Disease Risk Predictor"]
+    User(["User"]) -->|1. Health Biometrics| P1["1.0 Disease Risk Predictor"]
     P1 -->|Scale & Predict| M1[("ML Models: KNN / Naïve Bayes")]
     M1 -->|Prediction & Confidence| P1
     P1 -->|Store Record| D1[("SQLite Table: predictions")]
     P1 -->|Prediction Output| User
 
-    User -->|2. Feedback Text| P2["2.0 Sentiment & Topic Classifier"]
-    P2 -->|Vectorize & Classify| M2[("NLP Models: TF-IDF + MNB")]
-    M2 -->|Sentiment & Topic Labels| P2
-    P2 -->|Store Record| D2[("SQLite Table: feedback")]
-    P2 -->|Sentiment Output| User
+    User -->|2. Free-Text Symptoms| P2["2.0 Symptom Triage & Red-Flag Engine"]
+    P2 -->|Scan Red-Flags & Classify| M2[("Triage Engine: Regex + TF-IDF LogReg")]
+    M2 -->|Urgency Level & Top-3 Probabilities| P2
+    P2 -->|Store Record| D2[("SQLite Table: triage_logs")]
+    P2 -->|Triage Output & Action Advice| User
 
-    User -->|3. Chat Query| P3["3.0 Healthcare Chatbot Engine"]
-    P3 -->|Cosine Similarity| M3[("Intents Base: intents.json")]
-    M3 -->|Intent Match & Response| P3
-    P3 -->|Store Log| D3[("SQLite Table: chatbot_logs")]
-    P3 -->|Bot Response| User
+    User -->|3. Feedback Text| P3["3.0 Sentiment & Topic Classifier"]
+    P3 -->|Vectorize & Classify| M3[("NLP Models: TF-IDF + MNB")]
+    M3 -->|Sentiment & Topic Labels| P3
+    P3 -->|Store Record| D3[("SQLite Table: feedback")]
+    P3 -->|Sentiment Output| User
 
-    D1 -->|Fetch Predictions| P4["4.0 Dashboard & History Controller"]
-    D2 -->|Fetch Feedback| P4
-    P4 -->|Render Charts & Tables| User
+    User -->|4. Chat Query| P4["4.0 Healthcare Chatbot Engine"]
+    P4 -->|Cosine Similarity| M4[("Intents Base: intents.json")]
+    M4 -->|Intent Match & Response| P4
+    P4 -->|Store Log| D4[("SQLite Table: chatbot_logs")]
+    P4 -->|Bot Response| User
+
+    D1 -->|Fetch Predictions| P5["5.0 Dashboard & History Controller"]
+    D2 -->|Fetch Triage Logs| P5
+    D3 -->|Fetch Feedback| P5
+    P5 -->|Render Charts & Tables| User
 ```
 
 ---
@@ -193,38 +221,49 @@ flowchart TD
 ```mermaid
 erDiagram
     PREDICTIONS {
-        INTEGER id PK
-        TEXT timestamp
-        INTEGER pregnancies
-        REAL glucose
-        REAL blood_pressure
-        REAL skin_thickness
-        REAL insulin
-        REAL bmi
-        REAL diabetes_pedigree
-        INTEGER age
-        TEXT prediction
-        TEXT model_used
-        REAL confidence
-        TEXT interpretation
+        INTEGER id PK "Auto Increment"
+        TEXT timestamp "YYYY-MM-DD HH:MM:SS"
+        INTEGER pregnancies "Count"
+        REAL glucose "Plasma glucose mg/dL"
+        REAL blood_pressure "Diastolic mm Hg"
+        REAL skin_thickness "Triceps mm"
+        REAL insulin "2-hour serum muU/mL"
+        REAL bmi "Body mass index kg/m2"
+        REAL diabetes_pedigree "Genetic pedigree score"
+        INTEGER age "Years"
+        TEXT prediction "High Risk / Low Risk"
+        TEXT model_used "KNN / Naïve Bayes"
+        REAL confidence "Percentage 0-100"
+        TEXT interpretation "Clinical interpretation text"
+    }
+
+    TRIAGE_LOGS {
+        INTEGER id PK "Auto Increment"
+        TEXT timestamp "YYYY-MM-DD HH:MM:SS"
+        TEXT symptom_text "Patient free-text symptoms"
+        TEXT predicted_specialty "Primary medical specialty"
+        REAL confidence "Probability percentage"
+        TEXT top_3_json "Top 3 specialties with probabilities JSON"
+        TEXT urgency "EMERGENCY / SEE SOON / ROUTINE"
+        TEXT red_flags_matched "Matched clinical red-flags"
     }
 
     FEEDBACK {
-        INTEGER id PK
-        TEXT timestamp
-        TEXT feedback_text
-        TEXT sentiment
-        REAL sentiment_confidence
-        TEXT topic
-        REAL topic_confidence
+        INTEGER id PK "Auto Increment"
+        TEXT timestamp "YYYY-MM-DD HH:MM:SS"
+        TEXT feedback_text "Patient review string"
+        TEXT sentiment "Positive / Negative / Neutral"
+        REAL sentiment_confidence "Probability percentage"
+        TEXT topic "Operational domain topic"
+        REAL topic_confidence "Probability percentage"
     }
 
     CHATBOT_LOGS {
-        INTEGER id PK
-        TEXT timestamp
-        TEXT user_query
-        TEXT matched_intent
-        REAL confidence
-        TEXT bot_response
+        INTEGER id PK "Auto Increment"
+        TEXT timestamp "YYYY-MM-DD HH:MM:SS"
+        TEXT user_query "Raw user input prompt"
+        TEXT matched_intent "Detected intent tag"
+        REAL confidence "Cosine similarity score"
+        TEXT bot_response "Dispatched reply text"
     }
 ```

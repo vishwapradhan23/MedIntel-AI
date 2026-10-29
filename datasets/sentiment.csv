@@ -132,4 +132,370 @@ feedback,sentiment
 "Best consultation ever, doctor and staff were outstanding.",Positive
 "Amazing experience with the doctor and nursing staff.",Positive
 "Outstanding care and best medical treatment.",Positive
-
+"The doctor was kind and explained my test results very clearly.",Positive
+"I was seen on time and the whole visit was smooth.",Positive
+"The nurses took great care of me during my stay.",Positive
+"My blood sugar is now under control thanks to the treatment.",Positive
+"The risk prediction page is simple and gave me useful results.",Positive
+"The hospital rooms were spotless and comfortable.",Positive
+"Registration took just a few minutes and the staff were helpful.",Positive
+"The surgeon was skilled and the operation went very well.",Positive
+"I am grateful for the compassionate care my mother received.",Positive
+"The chatbot understood my question and replied with useful advice.",Positive
+"Very short waiting time and a friendly receptionist.",Positive
+"The physiotherapy helped me recover faster than I expected.",Positive
+"The dashboard is colorful, clear, and easy to understand.",Positive
+"The pharmacy staff explained each medicine patiently.",Positive
+"Excellent diagnosis and a well-explained treatment plan.",Positive
+"The hospital is clean, quiet, and well organized.",Positive
+"I felt safe and respected throughout my visit.",Positive
+"The online booking worked perfectly on my first try.",Positive
+"The lab results were accurate and delivered quickly.",Positive
+"Wonderful doctor who really cares about patients.",Positive
+"The follow-up call from the clinic was a thoughtful touch.",Positive
+"The medicine worked quickly and I felt better in two days.",Positive
+"The staff went out of their way to help my elderly father.",Positive
+"I appreciate how clearly the system explained my risk level.",Positive
+"The ambulance arrived quickly and the crew was professional.",Positive
+"Everything was smooth, from check-in to discharge.",Positive
+"The specialist gave me confidence about my recovery.",Positive
+"The app worked fast and showed my prediction instantly.",Positive
+"Great hospital with caring doctors and helpful nurses.",Positive
+"The cafeteria food was fresh and the dining area was clean.",Positive
+"I was impressed by how well the team coordinated my care.",Positive
+"The doctor answered every question and never made me feel rushed.",Positive
+"Billing was transparent and the staff explained every charge.",Positive
+"The treatment completely cured my skin infection.",Positive
+"The nurse was gentle and made my injection painless.",Positive
+"Quick, efficient, and polite service at the front desk.",Positive
+"The room was comfortable and the air conditioning worked well.",Positive
+"I would happily recommend this clinic to my friends.",Positive
+"The health tips from the chatbot were simple and useful.",Positive
+"The doctor was not rushed at all and listened to everything I said.",Positive
+"The staff were not rude at all, they were very polite.",Positive
+"I did not have to wait long, the service was quick.",Positive
+"The treatment was not painful and the recovery was quick.",Positive
+"The hospital was not crowded and everything was well managed.",Positive
+"No complaints at all, the care was excellent.",Positive
+"The dashboard is not confusing, it is very easy to use.",Positive
+"Not a single problem during my entire hospital stay.",Positive
+"The results were not delayed and the report was clear.",Positive
+"great doctor and very helpful staff",Positive
+"loved the service here",Positive
+"very happy with the treatment",Positive
+"clean hospital and nice nurses",Positive
+"fast and easy to use app",Positive
+"superb care thank you",Positive
+"The doctor gave me hope and the best possible care.",Positive
+"The facility is modern, hygienic, and comfortable for patients.",Positive
+"I am delighted with the fast recovery after my surgery.",Positive
+"The reception team was cheerful and guided me to the right department.",Positive
+"The prediction tool gave useful information that I could discuss with my doctor.",Positive
+"My experience was far better than I expected.",Positive
+"The cardiologist explained my heart condition in an easy-to-understand way.",Positive
+"The sample collection was quick and painless.",Positive
+"The hospital staff handled the emergency calmly and professionally.",Positive
+"The online report download feature saved me a trip to the hospital.",Positive
+"I felt reassured after the thorough checkup.",Positive
+"The discharge process was quick and the nurse explained all my medicines.",Positive
+"The pediatric ward was bright, clean, and welcoming for children.",Positive
+"The system gave me a clear and detailed summary of my results.",Positive
+"The medical team went above and beyond for my family.",Positive
+"Smooth and stress-free appointment from start to finish.",Positive
+"The consultation was informative and the doctor was very polite.",Positive
+"Delighted with the quick recovery and the supportive care team.",Positive
+"The reception area is well kept and comfortable.",Positive
+"The nurse checked on me regularly and made sure I was comfortable.",Positive
+"My diabetes is better managed because of the doctor's advice.",Positive
+"The page loaded fast and the form was easy to fill in.",Positive
+"Trustworthy hospital with experienced and humble doctors.",Positive
+"I got my appointment immediately and the doctor was very understanding.",Positive
+"The treatment was affordable and highly effective.",Positive
+"The staff treated me with dignity and kindness.",Positive
+"The doctor was patient with my many questions.",Positive
+"It was a relief to find such a helpful and organized clinic.",Positive
+"The system is reliable and gave results that matched my lab reports.",Positive
+"The therapist was supportive and my mobility has improved a lot.",Positive
+"The hospital provides excellent care at a reasonable price.",Positive
+"Lovely nurses who made my stay much easier.",Positive
+"The feedback page was simple and let me share my thoughts quickly.",Positive
+"The doctor made me feel calm before my procedure.",Positive
+"Everything was clean, quick, and professional.",Positive
+"The emergency team responded immediately and saved my father's life.",Positive
+"I really appreciate the friendly and attentive staff.",Positive
+"The health check package was thorough and good value.",Positive
+"The clear signboards helped me find my way easily.",Positive
+"The machine learning model gave an accurate result for me.",Positive
+"The doctor's advice about food and exercise was practical and useful.",Positive
+"Brilliant service, very satisfied.",Positive
+"My whole family was treated with care and respect.",Positive
+"The staff were helpful and the waiting time was minimal.",Positive
+"This hospital has improved a lot and I am very pleased.",Positive
+"The medical report was clear, detailed, and easy to follow.",Positive
+"The chatbot is a useful tool for quick health questions.",Positive
+"A very professional team that I would trust again.",Positive
+"The doctor was friendly, and the medicines worked well.",Positive
+"I am thankful for the timely treatment I received.",Positive
+"The ward was peaceful and the nurses were attentive.",Positive
+"Fantastic experience with the specialist and the support team.",Positive
+"The app is intuitive and the results are explained well.",Positive
+"I felt completely at ease during the consultation.",Positive
+"The dentist was gentle and explained each step of the procedure.",Positive
+"The overall experience was pleasant and satisfying.",Positive
+"My recovery was smooth, thanks to the excellent nursing care.",Positive
+"The clinic is neat and the doctors are very approachable.",Positive
+"Quick service and accurate lab results.",Positive
+"The doctor responded to my follow-up message promptly.",Positive
+"I got relief from my pain within a few days of the treatment.",Positive
+"Excellent follow-up care and communication from the hospital.",Positive
+"The queue was managed so well that I barely waited.",Positive
+"Warm, welcoming staff and a spotless environment.",Positive
+"The hospital app made scheduling my visit effortless.",Positive
+"Highly satisfied with the quality of care and the facilities.",Positive
+"The doctor was rude and did not listen to my problem.",Negative
+"I waited more than three hours and nobody apologized.",Negative
+"The nurses ignored me even after I pressed the call button.",Negative
+"The medicine made my condition worse.",Negative
+"The prediction page kept freezing and I lost my data.",Negative
+"The hospital rooms were filthy and smelled bad.",Negative
+"Registration was chaotic and the staff were unhelpful.",Negative
+"The surgery had complications and the follow-up was poor.",Negative
+"I am very upset with the careless treatment my mother received.",Negative
+"The chatbot gave irrelevant answers to every question I asked.",Negative
+"Very long waiting time and a rude receptionist.",Negative
+"The physiotherapy was painful and did not help at all.",Negative
+"The dashboard is cluttered and hard to understand.",Negative
+"The pharmacy staff were impatient and refused to explain the dosage.",Negative
+"Wrong diagnosis and a treatment plan that did not work.",Negative
+"The hospital is dirty, noisy, and badly managed.",Negative
+"I felt ignored and disrespected during my visit.",Negative
+"The online booking failed three times and charged me twice.",Negative
+"The lab results were wrong and had to be repeated.",Negative
+"Terrible doctor who does not care about patients.",Negative
+"Nobody called back to follow up after my surgery.",Negative
+"The medicine had no effect and I still have the same pain.",Negative
+"The staff refused to help my elderly father with the paperwork.",Negative
+"The system did not explain my risk level and left me confused.",Negative
+"The ambulance arrived very late and the crew seemed untrained.",Negative
+"Everything was a mess from check-in to discharge.",Negative
+"The specialist made me more worried about my condition.",Negative
+"The app was extremely slow and gave an error instead of my result.",Negative
+"Awful hospital with careless doctors and rude nurses.",Negative
+"The cafeteria food was stale and the tables were dirty.",Negative
+"The departments did not coordinate and I was sent back and forth.",Negative
+"The doctor cut me off every time I asked a question.",Negative
+"Billing was confusing and I was charged for services I did not use.",Negative
+"The treatment caused a severe allergic reaction.",Negative
+"The nurse was rough and made my injection very painful.",Negative
+"Slow, disorganized, and impolite service at the front desk.",Negative
+"The room was hot and stuffy because the air conditioner was broken.",Negative
+"I would never recommend this clinic to anyone.",Negative
+"The advice from the chatbot was generic and not helpful.",Negative
+"The doctor was not interested in my symptoms at all.",Negative
+"The staff were not helpful and did not answer my questions.",Negative
+"The treatment did not work and I am still in pain.",Negative
+"The hospital was not clean and the washrooms were unusable.",Negative
+"I could not get an appointment for weeks.",Negative
+"Not satisfied with the service at all.",Negative
+"The portal is not user friendly and keeps showing errors.",Negative
+"The doctor did not explain anything about my medication.",Negative
+"The reports were not ready on time and nobody could tell me why.",Negative
+"worst hospital ever",Negative
+"very rude staff and dirty rooms",Negative
+"waste of time and money",Negative
+"doctor was careless and unhelpful",Negative
+"app keeps crashing so annoying",Negative
+"terrible service not coming back",Negative
+"The doctor misdiagnosed my condition and wasted weeks of my time.",Negative
+"The facility is outdated, cramped, and uncomfortable for patients.",Negative
+"I am disappointed with the slow recovery after my poorly handled surgery.",Negative
+"The reception team was rude and sent me to the wrong department.",Negative
+"The prediction tool gave confusing results that did not match my reports.",Negative
+"My experience was far worse than I expected.",Negative
+"The cardiologist rushed through my examination and ignored my questions.",Negative
+"The sample collection was painful and the technician was careless.",Negative
+"The hospital staff panicked during the emergency and delayed my treatment.",Negative
+"The online report download kept failing and I had to visit twice.",Negative
+"I felt anxious after the shallow and hurried checkup.",Negative
+"The discharge process took hours and nobody explained my medicines.",Negative
+"The pediatric ward was noisy, crowded, and unclean.",Negative
+"The system gave me a vague summary that was of no use.",Negative
+"The medical team showed no concern for my family's worries.",Negative
+"Stressful and exhausting appointment from start to finish.",Negative
+"The consultation was useless and the doctor was impolite.",Negative
+"Disappointed with the delayed recovery and the unsupportive care team.",Negative
+"The reception area is dirty and the seats are broken.",Negative
+"The nurse never checked on me and I had to ask for water repeatedly.",Negative
+"My diabetes got worse because of the wrong advice I received.",Negative
+"The page took forever to load and the form kept resetting.",Negative
+"Unreliable hospital with inexperienced and arrogant doctors.",Negative
+"I was refused an appointment and the staff were dismissive.",Negative
+"The treatment was overpriced and completely ineffective.",Negative
+"The staff treated me with disrespect and impatience.",Negative
+"The doctor became irritated with my questions.",Negative
+"It was frustrating to deal with such a disorganized clinic.",Negative
+"The system is unreliable and gave results that contradicted my lab reports.",Negative
+"The therapist was careless and my injury got worse.",Negative
+"The hospital charges too much for very poor care.",Negative
+"Lazy nurses who made my stay miserable.",Negative
+"The feedback page crashed and my review was lost.",Negative
+"The doctor made me more nervous before my procedure.",Negative
+"Everything was dirty, slow, and unprofessional.",Negative
+"The emergency team responded very late and my father suffered.",Negative
+"I really dislike the unfriendly and inattentive staff.",Negative
+"The health check package was rushed and poor value.",Negative
+"The confusing signboards made it impossible to find my way.",Negative
+"The machine learning model gave an incorrect result for me.",Negative
+"The doctor's advice about food and exercise was confusing and impractical.",Negative
+"Pathetic service, very dissatisfied.",Negative
+"My whole family was treated with neglect.",Negative
+"The staff were unhelpful and the waiting time was endless.",Negative
+"This hospital has declined a lot and I am very unhappy.",Negative
+"The medical report was unclear, incomplete, and full of mistakes.",Negative
+"The chatbot is useless for health questions.",Negative
+"An unprofessional team that I would never trust again.",Negative
+"The doctor was cold, and the medicines had many side effects.",Negative
+"I am upset about the delayed treatment I received.",Negative
+"The ward was noisy and the nurses were inattentive.",Negative
+"Horrible experience with the specialist and the support team.",Negative
+"The app is confusing and the results are not explained.",Negative
+"I felt very uncomfortable during the consultation.",Negative
+"The dentist was rough and did not explain the procedure.",Negative
+"The overall experience was unpleasant and stressful.",Negative
+"My recovery was slow because of poor nursing care.",Negative
+"The clinic is messy and the doctors are hard to reach.",Negative
+"Slow service and unreliable lab results.",Negative
+"The doctor ignored my follow-up message completely.",Negative
+"My pain got worse after the treatment.",Negative
+"Poor follow-up care and no communication from the hospital.",Negative
+"The queue was so badly managed that I waited all day.",Negative
+"Cold, unwelcoming staff and a dirty environment.",Negative
+"The hospital app made scheduling my visit a nightmare.",Negative
+"The reception desk is on the ground floor near the main entrance.",Neutral
+"The patient registered using a phone number and an ID card.",Neutral
+"The blood test report was uploaded to the portal on Monday.",Neutral
+"The OPD timings are from 9 AM to 5 PM on weekdays.",Neutral
+"The doctor asked about my family medical history.",Neutral
+"The prediction form has fields for glucose, insulin, and BMI.",Neutral
+"The patient was given a token number at the registration counter.",Neutral
+"The hospital has a cardiology department and a diabetes clinic.",Neutral
+"The nurse recorded my weight and height before the consultation.",Neutral
+"My next appointment is scheduled for the fifteenth of the month.",Neutral
+"The system stores each prediction result along with the date and time.",Neutral
+"The pharmacy is located next to the main lobby.",Neutral
+"The doctor prescribed a tablet to be taken twice a day after meals.",Neutral
+"The feedback form contains a text box and a submit button.",Neutral
+"The patient was shifted from the emergency ward to the general ward.",Neutral
+"The ECG test was conducted in the diagnostic room.",Neutral
+"The dashboard shows a bar chart of feedback categories.",Neutral
+"I was asked to fast for twelve hours before the blood test.",Neutral
+"The hospital offers both online and in-person appointments.",Neutral
+"The doctor noted my symptoms in the patient file.",Neutral
+"The chatbot answers questions using a stored set of responses.",Neutral
+"The patient was admitted on Sunday and discharged on Wednesday.",Neutral
+"The X-ray department is open until six in the evening.",Neutral
+"The report lists hemoglobin, glucose, and cholesterol values.",Neutral
+"The system converts the feedback text into numerical features.",Neutral
+"The patient's age is recorded as forty-two years.",Neutral
+"The consultation fee was paid at the billing counter.",Neutral
+"The doctor referred me to an endocrinologist.",Neutral
+"The web application has separate pages for prediction and feedback.",Neutral
+"The patient received a printed copy of the discharge summary.",Neutral
+"The ultrasound was scheduled for the following morning.",Neutral
+"The hospital provides ambulance service through a helpline number.",Neutral
+"The model was trained on a dataset of patient records.",Neutral
+"The test sample was sent to the laboratory for analysis.",Neutral
+"The patient was asked to bring previous reports to the visit.",Neutral
+"The user logs in with an email address and a password.",Neutral
+"The waiting area has rows of chairs and a television.",Neutral
+"The doctor measured my blood pressure with a digital monitor.",Neutral
+"The clinic is closed on public holidays.",Neutral
+"The feedback text is cleaned and tokenized before analysis.",Neutral
+"The patient visited the hospital for a routine checkup.",Neutral
+"The insulin dosage was noted in the treatment chart.",Neutral
+"The health report was emailed to the patient.",Neutral
+"The hospital is affiliated with a medical college.",Neutral
+"The doctor explained that the test results would be ready in two days.",Neutral
+"The prediction result is shown as a risk percentage.",Neutral
+"The visitor entered the hospital through gate number two.",Neutral
+"The patient was given a form to fill in basic personal details.",Neutral
+"The system has a history page listing earlier entries.",Neutral
+"The nurse administered the injection in the left arm.",Neutral
+"The patient is scheduled for surgery on Thursday.",Neutral
+"The hospital has two hundred beds across five floors.",Neutral
+"The doctor advised a follow-up visit after two weeks.",Neutral
+"The application is accessible through a web browser.",Neutral
+"The patient record contains name, age, and contact details.",Neutral
+"The lab technician collected a urine sample.",Neutral
+"The consultation took place in room number twelve.",Neutral
+"The system uses stored models to generate predictions.",Neutral
+"The department head attends outpatient clinics on Tuesdays and Fridays.",Neutral
+"The patient asked about the visiting hours.",Neutral
+"The prescription lists three medicines and their dosages.",Neutral
+"The user can select a language from the settings menu.",Neutral
+"The sentiment of each feedback is stored in the database.",Neutral
+"The patient arrived at the hospital at eight in the morning.",Neutral
+"The glucose reading was taken after breakfast.",Neutral
+"The doctor reviewed the ECG report and the blood test results.",Neutral
+"The administration office handles insurance forms.",Neutral
+"The patient was moved to a private room on the second floor.",Neutral
+"The feedback page can be opened from the main menu.",Neutral
+"The hospital website lists the names of all consulting doctors.",Neutral
+"The training data was split into training and testing sets.",Neutral
+"The doctor examined the patient's throat and chest.",Neutral
+"The cafeteria is on the first floor of the main building.",Neutral
+"The patient completed the form and submitted it online.",Neutral
+"The test report shows a hemoglobin level of thirteen.",Neutral
+"The system runs on a local server inside the hospital network.",Neutral
+"The doctor recorded the patient's height and weight.",Neutral
+"Visitors are allowed between four and six in the evening.",Neutral
+"The appointment was booked through the hospital helpline.",Neutral
+"The patient was prescribed a diet chart by the dietitian.",Neutral
+"The medical camp was organized in the community hall on Saturday.",Neutral
+"The prediction model accepts numeric values only.",Neutral
+"The patient was transferred to another hospital for a specialized test.",Neutral
+"The hospital's phone number is printed on the visiting card.",Neutral
+"The user receives a confirmation message after submitting feedback.",Neutral
+"The nurse updated the patient's chart every four hours.",Neutral
+"The ward has twelve beds arranged in two rows.",Neutral
+"The report was signed by the consulting pathologist.",Neutral
+"The patient asked where to collect the medicines.",Neutral
+"The pharmacy accepts both cash and card payments.",Neutral
+"The doctor wrote down the patient's medication list.",Neutral
+"The model evaluation was done using accuracy and F1 score.",Neutral
+"The patient came with a referral letter from a family doctor.",Neutral
+"The information desk provides maps of the hospital.",Neutral
+"The health survey contains twenty questions.",Neutral
+"The patient completed a fasting blood sugar test.",Neutral
+"The doctor will see patients by appointment only.",Neutral
+"The application sends the input values to a Flask API.",Neutral
+"The vaccination room is next to the pediatric clinic.",Neutral
+"The hospital's records are maintained in a digital format.",Neutral
+"The patient was given an appointment slip with a time and date.",Neutral
+"The user can download the report as a PDF file.",Neutral
+"The diagnosis was entered into the electronic record.",Neutral
+"The nurse explained the hospital visiting rules.",Neutral
+"The clinic provides services in the morning and the evening.",Neutral
+"The topic of the feedback is detected by the analysis module.",Neutral
+"The patient took the lift to the third floor.",Neutral
+"The doctor recommended a chest X-ray and a blood test.",Neutral
+"The laboratory is located in the basement.",Neutral
+"The appointment confirmation was sent by text message.",Neutral
+"The patient's blood pressure was one hundred twenty over eighty.",Neutral
+"The staff checked the patient's identity card at the entrance.",Neutral
+"The questionnaire asks about diet, sleep, and exercise.",Neutral
+"The system contains modules for prediction, feedback, and chatbot.",Neutral
+"The consultation was held over a video call.",Neutral
+"The hospital has parking on the east side of the building.",Neutral
+"The patient was told to return with the test reports.",Neutral
+"The model file is loaded when the server starts.",Neutral
+"The nurse noted the patient's temperature on the chart.",Neutral
+"The dashboard can be filtered by date range.",Neutral
+"The pathology department operates on a fixed schedule.",Neutral
+"The patient submitted feedback after the discharge.",Neutral
+"The doctor discussed the schedule for the next test.",Neutral
+"The data is stored in a table with columns for text and label.",Neutral
+"The user enters symptoms into a text field.",Neutral
+"The patient signed the consent form before the procedure.",Neutral
+"The hospital's main building has six floors.",Neutral
+"The patient was asked to sit in the waiting area until called.",Neutral
